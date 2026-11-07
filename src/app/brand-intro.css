@@ -1,0 +1,134 @@
+html[data-intro] { overflow:hidden; }
+
+.icing-intro {
+  --intro-duration:4.8s;
+  --logo-height:clamp(135px,35svh,250px);
+  --liquid:linear-gradient(175deg,#fff4dc 8%,#f6c7d3 52%,#df8da8 100%);
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  overflow:hidden;
+  color:var(--paper);
+  background:radial-gradient(ellipse at 50% 48%,#744739 0%,#4d2a25 48%,#2c1817 100%);
+}
+html[data-intro] .icing-intro { display:block; animation:icing-exit var(--intro-duration) both; }
+.icing-pour {
+  --syrup-start:#fff4dc;
+  --syrup-middle:#f6c7d3;
+  --syrup-end:#e8a7b9;
+  inset:0 0 auto;
+  width:100%;
+  height:clamp(75px,22svh,188px);
+  transform-origin:top;
+  animation:icing-pour var(--intro-duration) both;
+}
+.icing-pour .syrup-glint { display:none; }
+.icing-stream {
+  position:absolute;
+  top:0;
+  left:50%;
+  width:clamp(14px,2.1vw,28px);
+  height:calc(50% + var(--logo-height) * .38);
+  border-radius:0 0 65% 65% / 0 0 5% 5%;
+  background:linear-gradient(90deg,#e6a9b9,#fff5df 34%,#f6c9d1 61%,#d981a0);
+  box-shadow:0 10px 20px #2b14196b;
+  transform-origin:top;
+  animation:icing-stream var(--intro-duration) both;
+}
+.icing-mark {
+  position:absolute;
+  top:50%;
+  left:50%;
+  height:var(--logo-height);
+  aspect-ratio:514/918;
+  translate:-50% -50%;
+}
+.icing-logo {
+  position:absolute;
+  inset:0;
+  filter:drop-shadow(0 12px 26px #1d100e65);
+  animation:icing-melt-logo var(--intro-duration) both;
+}
+.icing-logo img,.icing-logo-fill { position:absolute; inset:0; width:100%; height:100%; }
+.icing-logo img { object-fit:contain; animation:icing-logo-reveal var(--intro-duration) both; }
+.icing-logo-fill {
+  mask:url('/images/details/Secondarylogo.png') center/contain no-repeat;
+  background:var(--liquid);
+  animation:icing-fill var(--intro-duration) both;
+}
+.icing-melt span {
+  position:absolute;
+  top:79%;
+  left:var(--strand-left);
+  width:var(--strand-width);
+  height:clamp(24px,6svh,53px);
+  border-radius:999px;
+  background:var(--liquid);
+  transform-origin:top;
+  animation:icing-melt-strand var(--intro-duration) both;
+}
+.icing-melt span:nth-child(1) { --strand-left:30%; --strand-width:10%; --strand-fall:13svh; }
+.icing-melt span:nth-child(2) { --strand-left:49%; --strand-width:14%; --strand-fall:17svh; }
+.icing-melt span:nth-child(3) { --strand-left:70%; --strand-width:8%; --strand-fall:11svh; }
+.icing-skip {
+  position:absolute;
+  right:clamp(21px,5vw,73px);
+  bottom:clamp(24px,6vh,65px);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 15px;
+  border:1px solid #ffeed278;
+  border-radius:999px;
+  color:#fff3e3;
+  background:#39221e;
+  font-size:11px;
+  font-weight:900;
+}
+.icing-skip:focus-visible { outline-color:#fff3e3; }
+
+@keyframes icing-pour {
+  0% { transform:scaleY(.08); }
+  20%,29% { transform:scaleY(1); opacity:1; }
+  46%,100% { transform:scaleY(.06); opacity:0; }
+}
+@keyframes icing-stream {
+  0%,7% { transform:translateX(-50%) scaleY(.01); opacity:0; }
+  12% { opacity:1; }
+  24%,31% { transform:translateX(-50%) scaleY(1); opacity:1; }
+  46%,100% { transform:translateX(-50%) scale(.4,.72); opacity:0; }
+}
+@keyframes icing-fill {
+  0%,23% { clip-path:inset(100% 0 0); opacity:0; }
+  26% { clip-path:inset(88% 0 0); opacity:1; }
+  46% { clip-path:inset(0); opacity:1; }
+  53%,60% { clip-path:inset(0); opacity:0; }
+  70%,76% { clip-path:inset(0); opacity:1; }
+  86%,100% { clip-path:inset(70% 0 0); opacity:0; }
+}
+@keyframes icing-logo-reveal {
+  0%,42% { opacity:0; }
+  51%,65% { opacity:1; }
+  77%,100% { opacity:0; }
+}
+@keyframes icing-melt-logo {
+  0%,64% { transform:none; transform-origin:50% 75%; }
+  75% { transform:translateY(4%) scale(.91,1.2); }
+  86%,100% { transform:translateY(43%) scale(.63,1.45); transform-origin:50% 75%; }
+}
+@keyframes icing-melt-strand {
+  0%,65% { opacity:0; transform:scale(.6,.16); }
+  71% { opacity:1; transform:scale(1,1.2); }
+  81% { opacity:1; transform:translateY(calc(var(--strand-fall) * .44)) scale(.75,1.55); }
+  88%,100% { opacity:0; transform:translateY(var(--strand-fall)) scale(.5,.72); }
+}
+@keyframes icing-exit {
+  0%,88% { transform:translateY(0); animation-timing-function:cubic-bezier(.68,0,.26,1); }
+  100% { transform:translateY(101%); }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  html[data-intro] { overflow-x:hidden; overflow-y:auto; }
+  html[data-intro] .icing-intro,.replay-intro { display:none; }
+}

@@ -1,0 +1,35 @@
+.portfolio-main :is(.about-section,.story-chapters,.about-purpose,.about-benefits,.founders-section,.business-concept,.products-reference,.identity-guide,.launch-showcase,.showcase-stage,.campaign-journal,.closing) {
+  width:100%;
+  margin:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+.portfolio-main :is(.story-chapters,.about-purpose,.about-benefits,.founders-section,#audience,.reference-lead,.reference-collection,.reference-feature,.reference-catalog,.identity-guide,.showcase-stage,.campaign-journal,.closing) {
+  min-height:100svh;
+}
+.portfolio-main :is(.about-benefits,.founders-section,#audience,.campaign-journal,.closing) { display:grid; align-content:center; }
+.portfolio-main :is(.about-benefits,.closing) { justify-items:center; }
+.portfolio-main .business-wrap>#audience { width:100%; max-width:none; border:0; padding-inline:max(22px,calc((100% - 1120px) / 2)); }
+.portfolio-main .reference-catalog { display:flex; flex-direction:column; }
+.portfolio-main .catalog-formations { border:0; }
+.portfolio-main .catalog-products { flex:1; }
+.portfolio-main .launch-showcase { padding:0; scroll-margin-top:0; }
+.portfolio-main .identity-guide { padding-inline:clamp(17px,4.8vw,68px); }
+.portfolio-main :is(.about-purpose,.identity-guide,.showcase-stage,.closing) { position:relative; isolation:isolate; }
+.section-syrup { inset-inline:0; width:100%; height:clamp(26px,4.3vw,62px); color:var(--paper); z-index:1; }
+.section-syrup-top { top:-1px; }
+.section-syrup-bottom { bottom:-1px; rotate:180deg; }
+.identity-syrup { color:#f7f2eb; }
+.showcase-syrup { color:#f1eeec; }
+.closing-syrup { color:var(--ganache); }
+
+@media(prefers-reduced-motion:no-preference) {
+  .portfolio-main :is(.about-story-photo,.about-purpose-photo)>img {
+    scale:1.1;
+    translate:0 var(--media-drift,0px);
+  }
+  .portfolio-main :is(.reference-hero-product,.reference-feature-image img,.identity-mark-card img,.campaign-editorial-figure img) {
+    translate:0 var(--media-drift,0px);
+  }
+}

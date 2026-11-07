@@ -1,0 +1,158 @@
+[
+  {
+    "source": "Public/Details/Models/lulu reynolds.jpg",
+    "public": "/images/details/hero.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/History/AboutUs1.jpg",
+    "public": "/images/details/story/AboutUs1.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/History/AboutUs2.jpg",
+    "public": "/images/details/story/AboutUs2.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/History/AboutUs3.jpg",
+    "public": "/images/details/story/AboutUs3.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/History/AboutUs4.jpg",
+    "public": "/images/details/story/AboutUs4.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/History/AboutUs5.jpg",
+    "public": "/images/details/story/AboutUs5.webp"
+  },
+  {
+    "source": "Public/Details/Founders/lhaiza.jpeg",
+    "public": "/images/details/founders/lhaiza.webp"
+  },
+  {
+    "source": "Public/Details/Founders/nestor.jpeg",
+    "public": "/images/details/founders/nestor.webp"
+  },
+  {
+    "source": "Public/Details/Founders/kenneth.jpeg",
+    "public": "/images/details/founders/kenneth.webp"
+  },
+  {
+    "source": "Public/Details/Founders/joshua.jpeg",
+    "public": "/images/details/founders/joshua.webp"
+  },
+  {
+    "source": "Public/Details/competitors/aegyo.jpg",
+    "public": "/images/details/competitors/aegyo.jpg"
+  },
+  {
+    "source": "Public/Details/competitors/cakeindulge.jpg",
+    "public": "/images/details/competitors/cakeindulge.jpg"
+  },
+  {
+    "source": "Public/Details/competitors/charms.jpg",
+    "public": "/images/details/competitors/charms.jpg"
+  },
+  {
+    "source": "Public/Details/competitors/contis.jpg",
+    "public": "/images/details/competitors/contis.jpg"
+  },
+  {
+    "source": "Public/Details/competitors/goldilocks.jpg",
+    "public": "/images/details/competitors/goldilocks.jpg"
+  },
+  {
+    "source": "Public/Details/competitors/redribbon.jpg",
+    "public": "/images/details/competitors/redribbon.jpg"
+  },
+  {
+    "source": "Public/Details/Logo/Primarylogo.png",
+    "public": "/images/details/Primarylogo.png"
+  },
+  {
+    "source": "Public/Details/Logo/Secondarylogo.png",
+    "public": "/images/details/Secondarylogo.png"
+  },
+  {
+    "source": "Public/Details/Logo/Sketch.jpg",
+    "public": "/images/details/Sketch.jpg"
+  },
+  {
+    "source": "Public/Details/febpics/Firsteverbrandpost.png",
+    "public": "/images/details/Firsteverbrandpost.png"
+  },
+  {
+    "source": "Public/Details/febpics/feb1.jpg",
+    "public": "/images/details/febpics/feb1.jpg"
+  },
+  {
+    "source": "Public/Details/febpics/feb2.png",
+    "public": "/images/details/febpics/feb2.png"
+  },
+  {
+    "source": "Public/Details/febpics/feb3.jpg",
+    "public": "/images/details/febpics/feb3.jpg"
+  },
+  {
+    "source": "Public/Details/Promotional Poster/Promotional.png",
+    "public": "/images/details/Promotional.png"
+  },
+  {
+    "source": "Public/Details/color pallete/color.png",
+    "public": "/images/details/color.png"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/box.png",
+    "public": "/images/details/products/box.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/box2.png",
+    "public": "/images/details/products/box2.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/mockup.png",
+    "public": "/images/details/products/mockup.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Triangular/CkTriang1.jpg",
+    "public": "/images/details/products/triangle-1.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Triangular/CkTriang2.jpg",
+    "public": "/images/details/products/triangle-2.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Triangular/CkTriang3.jpg",
+    "public": "/images/details/products/triangle-3.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Triangular/CkTriang4.jpg",
+    "public": "/images/details/products/triangle-4.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Triangular/CkTriang5.jpg",
+    "public": "/images/details/products/triangle-5.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Layer/CkLayer1.jpg",
+    "public": "/images/details/products/layer-1.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Layer/CkLayer2.jpg",
+    "public": "/images/details/products/layer-2.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Layer/CkLayer3.jpg",
+    "public": "/images/details/products/layer-3.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Layer/CkLayer4.jpg",
+    "public": "/images/details/products/layer-4.webp"
+  },
+  {
+    "source": "Public/Details/BusinessConcept/products/Cakes/Layer/CkLayer5.jpg",
+    "public": "/images/details/products/layer-5.webp"
+  },
+  {
+    "source": "Public/Details/PT1 FORMESLICE.pdf",
+    "public": "/images/details/business-concept.pdf"
+  }
+]

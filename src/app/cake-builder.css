@@ -1,0 +1,73 @@
+.cake-builder { position:relative; isolation:isolate; padding:clamp(58px,7.8vw,111px) 25px; background:#f9eee9; color:var(--cocoa); }
+.cake-builder-heading { margin:0 auto 29px; width:min(1190px,100%); }
+.cake-builder-heading .eyebrow { color:#a62f58; }
+.cake-builder .cake-builder-heading h1 { margin:8px 0; font-family:var(--font-body),sans-serif; font-size:clamp(39px,6.2vw,82px); font-weight:1000; line-height:.97; letter-spacing:-.078em; color:#4e2b24; }
+.cake-builder-heading p { font-size:15px; line-height:1.5; }
+.cake-builder-layout { display:grid; grid-template-columns:minmax(0,1.21fr) minmax(0,1fr); gap:12px; width:min(1190px,100%); margin:auto; align-items:start; }
+.cake-builder-preview,.cake-builder-controls { min-width:0; border:1px solid #96664d39; border-radius:22px; background:#fffaf4; }
+.cake-builder-preview { overflow:hidden; }
+.cake-builder-stage {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  height:clamp(330px,40vw,487px);
+  touch-action:pan-y;
+  cursor:grab;
+  background:radial-gradient(ellipse at 48% 56%,#fff7e5 8%,#fae7da 50%,#eec1d0 100%);
+}
+.cake-builder-stage:active { cursor:grabbing; }
+.cake-builder-stage[data-preview-available="false"] { cursor:default; }
+.cake-scene-loading { position:absolute; inset:0; display:grid; place-items:center; font-size:12px; font-weight:900; }
+.cake-builder-badge { position:absolute; z-index:1; top:17px; left:17px; display:inline-flex; align-items:center; gap:6px; padding:6px 11px; border:1px solid #8e504761; border-radius:999px; background:#fff8ee; font-size:10px; font-weight:1000; letter-spacing:.1em; pointer-events:none; }
+.cake-scene,.cake-scene-fallback { position:absolute; inset:0; }
+.cake-scene canvas { display:block; width:100%; height:100%; }
+.cake-scene-fallback { display:grid; justify-items:center; align-content:center; gap:8px; pointer-events:none; }
+.cake-scene-fallback img { width:min(49%,255px); height:auto; }
+.cake-scene-fallback p { max-width:240px; font-size:11px; text-align:center; }
+.cake-builder-view-controls { display:flex; flex-wrap:wrap; gap:5px; justify-content:space-between; align-items:center; padding:11px 17px; border-bottom:1px solid #9d6c5736; color:#724a40; font-size:11px; font-weight:800; }
+.cake-builder-recipe { display:grid; gap:4px; padding:15px 17px 20px; color:#5d3b31; font-size:12px; }
+.cake-builder-recipe strong { font-size:14px; }
+.cake-builder-controls { display:grid; gap:21px; padding:clamp(15px,2.5vw,28px); }
+.cake-builder-controls button { min-height:40px; padding:7px 9px; border:1px solid #a67c6460; border-radius:10px; background:#fff9ef; color:#56352b; text-align:left; font-size:11px; font-weight:900; }
+.cake-builder-controls button:not(:disabled):is(:hover,[aria-pressed="true"]) { border-color:#aa476a; background:#f9e0e9; }
+.builder-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; padding:0; margin:0; list-style:none; }
+.builder-steps li { min-width:0; }
+.builder-steps li button { display:flex; align-items:center; gap:6px; width:100%; min-height:43px; padding:6px; white-space:nowrap; }
+.builder-steps button span,.builder-drop-slot span { display:grid; place-items:center; flex:0 0 23px; height:23px; border-radius:50%; background:#efd5ce; color:#64392f; font-size:10px; }
+.builder-steps button[aria-current="step"] { color:#77354c; border-color:#b85e81; background:#f8dce7; }
+.builder-steps button:disabled { opacity:.58; }
+.builder-step-panel { min-width:0; }
+.cake-builder .builder-step-panel h2 { margin:0 0 8px; font-size:clamp(26px,3vw,40px); line-height:1.04; color:#4e2b24; letter-spacing:-.055em; }
+.builder-step-panel>p { margin-bottom:17px; font-size:13px; line-height:1.55; }
+.builder-formations,.builder-flavors,.builder-drop-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; }
+.builder-formations button { display:grid; justify-items:start; gap:6px; min-height:105px; padding:12px; }
+.builder-formations strong { font-size:14px; }
+.builder-formations small { font-size:11px; }
+.builder-counts { display:flex; flex-wrap:wrap; gap:7px; }
+.builder-counts button { min-width:44px; height:44px; text-align:center; font-size:15px; }
+.builder-flavors button { display:flex; align-items:center; gap:6px; cursor:grab; }
+.builder-flavors button:active { cursor:grabbing; }
+.builder-flavors i { display:block; flex:0 0 12px; width:12px; height:12px; border:1px solid #78463135; border-radius:50%; background:var(--piece-color); }
+.builder-flavors svg { margin-left:auto; color:#885d57; flex-shrink:0; }
+.builder-drop-grid { margin-top:15px; }
+.cake-builder-controls .builder-drop-slot { display:flex; align-items:center; gap:7px; min-height:46px; border-style:dashed; }
+.cake-builder-controls .builder-drop-slot[data-filled="true"] { border-style:solid; border-color:#a4657b; background:#f5e0e5; }
+.cake-builder-controls .builder-drop-slot[data-drop-target="true"] { outline:2px solid #a62f58; outline-offset:1px; background:#f8d3e1; }
+.builder-step-panel .builder-guidance { margin:12px 0 0; color:#795045; font-size:12px; font-weight:800; }
+.builder-step-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:center; padding-top:14px; border-top:1px solid #e8d5ca; }
+.builder-step-actions button,.builder-done { display:flex; align-items:center; gap:6px; }
+.cake-builder-controls .builder-next { padding-inline:13px; background:#9a385e; color:#fff8f1; border-color:#9a385e; }
+.cake-builder-controls .builder-next:not(:disabled):hover { background:#75304a; color:#fff8f1; }
+.builder-done { margin-left:auto; color:#44603b; font-size:11px; font-weight:900; }
+@media(max-width:767px) {
+  .cake-builder { padding-inline:15px; }
+  .cake-builder-layout { grid-template-columns:1fr; }
+  .cake-builder-stage { height:clamp(240px,72vw,355px); }
+  .cake-builder-heading p { font-size:13px; }
+  .cake-builder-view-controls { padding-inline:12px; }
+}
+@media(max-width:440px) { .reference-local-nav nav { gap:8px; } .reference-local-nav nav a { font-size:9px; } }
+
+.studio-return { display:inline-flex; align-items:center; min-height:39px; padding:6px 14px; border:1px solid #f7ead264; border-radius:999px; color:#fff4e6; font-size:clamp(10px,2.8vw,13px); font-weight:900; text-align:center; }
+.studio-return:hover { color:var(--cocoa); background:var(--vanilla); }
+.cake-builder-stage:focus-visible { outline:2px solid #a62f58; outline-offset:-3px; }

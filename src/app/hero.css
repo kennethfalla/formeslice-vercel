@@ -1,0 +1,78 @@
+.hero-flight { min-height:151svh; background:#583030; }
+.brand-hero {
+  position:sticky;
+  top:0;
+  isolation:isolate;
+  overflow:hidden;
+  width:100%;
+  display:grid;
+  align-items:end;
+  min-height:100svh;
+  color:#fff6ee;
+  background:#583030;
+}
+.brand-hero-photo {
+  position:absolute;
+  z-index:-2;
+  top:0;
+  right:0;
+  width:min(65%,110svh);
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+  mask-image:linear-gradient(90deg,transparent,#000 42%);
+  transform-origin:70% 42%;
+}
+.brand-hero::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  background:linear-gradient(0deg,#291616ec 0%,#29161658 34%,transparent 66%);
+}
+.brand-hero-inner {
+  position:relative;
+  z-index:2;
+  width:min(100%,1440px);
+  margin-inline:auto;
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:24px;
+  padding:clamp(92px,13vh,140px) clamp(26px,4.5vw,63px) clamp(28px,5.5vw,78px);
+}
+.brand-hero-copy .eyebrow { color:#ffe0e5; margin-bottom:13px; }
+.brand-hero h1 {
+  color:#ffd0db;
+  font-size:clamp(49px,6.5vw,96px);
+  line-height:.92;
+  letter-spacing:-.035em;
+}
+.brand-hero-copy p { max-width:44ch; margin-top:17px; font-size:clamp(14px,1.3vw,17px); }
+.brand-hero-cta.pill { flex:none; background:#f7d0db; color:#462521; }
+.brand-hero-cta.pill:hover { background:#ffe6ee; }
+.brand-hero-actions { display:grid; justify-items:end; gap:14px; flex:none; }
+.hero-scroll-cue {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  color:#fff6ee;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+@media(max-width:720px) {
+  .hero-flight { min-height:131svh; }
+  .brand-hero-photo { width:100%; object-position:center 14%; mask-image:none; }
+  .brand-hero::before { background:linear-gradient(0deg,#301a1af5 0%,#301a1ab0 27%,#301a1a14 62%,transparent 72%); }
+  .brand-hero-inner { flex-direction:column; align-items:start; gap:19px; padding:90px 20px 29px; }
+  .brand-hero h1 { font-size:clamp(36px,9.6vw,63px); }
+  .brand-hero-copy p { margin-top:10px; }
+  .brand-hero-actions { justify-items:start; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-flight { min-height:100svh; }
+  .brand-hero { position:relative; }
+}

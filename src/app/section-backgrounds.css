@@ -1,0 +1,44 @@
+/* Section surfaces and card details. */
+body { overflow-x:clip; }
+.story-chapters,.mission-vision,.founders-section,.business-concept,.identity-guide,.campaign-journal,.closing { overflow-x:clip; }
+.header {
+  background:linear-gradient(100deg,#fff9edf5,#f7efdef2);
+  backdrop-filter:blur(16px);
+  box-shadow:0 3px 18px #65413610;
+}
+.story-chapters,.mission-vision,.founders-section,.campaign-journal,.closing { position:relative; isolation:isolate; }
+.story-chapters {
+  background-color:#fff6e7;
+}
+.story-intro-copy { position:relative; }
+.mission-vision {
+  background-color:#f3e3dc;
+  border-top:1px solid #ad496520; border-bottom:1px solid #ad496520;
+}
+.value-panel { background:linear-gradient(110deg,#f4d1dc,#f8e8dc); box-shadow:0 9px 25px #65413612,0 4px 0 #65413612; border:1px solid #ffffff90; }
+.value-vision { background:linear-gradient(110deg,#eee0c8,#f9ecd8); }
+.value-photo { border-color:#fff4e5; box-shadow:0 6px 18px #65413615; }
+.founders-section {
+  background-color:#eed0d9;
+}
+.business-concept {
+  background-color:#fff4e4;
+  padding-top:70px;
+}
+.audience-grid article { background:linear-gradient(130deg,#fffaf2f7,#f7efdef2); box-shadow:0 8px 20px #65413608; }
+.identity-guide {
+  background-color:#ad4965;
+}
+.identity-mark-card { box-shadow:0 12px 30px #65413620; border:1px solid #fff9ed80; }
+.identity-name-band { background:linear-gradient(120deg,#f1c8d5,#e5b3c1); }
+.campaign-journal {
+  background-color:#fff6e7;
+}
+.closing {
+  background-color:#ad4965;
+}
+.closing .brand-image { mix-blend-mode:normal; background:var(--cream); padding:10px; border-radius:999px; }
+.closing .credits { border-color:#f7efde55; }
+@media(max-width:767px) {
+  .business-concept { padding-top:50px; }
+}

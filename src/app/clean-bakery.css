@@ -1,0 +1,290 @@
+/* A clean bakery direction for everything after the existing hero. */
+.about-section,.identity-guide,.launch-showcase,.campaign-journal,.closing,footer {
+  --bakery-pink:#b83263; --bakery-soft:#ffd7e4; --bakery-ink:#513c40;
+  color:var(--bakery-ink); background:#fff;
+}
+.about-section :is(h2,h3,h4,h5),.identity-guide :is(h2,h3,h4),.launch-showcase h3,.campaign-journal :is(h2,h3),.closing h2 {
+  font-family:var(--font-body),sans-serif; font-weight:900; letter-spacing:-.045em; line-height:1.08;
+}
+.about-section h2,.identity-guide h2,.campaign-journal h2,.closing h2 { font-size:clamp(38px,4.5vw,64px); }
+.about-section .eyebrow,.identity-guide .eyebrow,.campaign-journal .eyebrow { color:var(--bakery-pink); font-size:10px; letter-spacing:.12em; }
+.about-section h2,.about-section .business-subheading h3,.identity-board-heading h2,.identity-row-label h3,.typography-heading h3,.campaign-journal h2,.campaign-journal h3 { color:var(--bakery-pink); }
+.about-section.cream-curve { margin-top:0; border-radius:0; background:#fff; padding-top:0; }
+.about-section.cream-curve::before { content:none; }
+.story-chapters,.mission-vision,.founders-section,.business-concept,.identity-guide,.campaign-journal,.closing { background-image:none; border:0; }
+.story-chapters::before,.story-chapters::after,.mission-vision::before,.mission-vision::after,.founders-section::before,.founders-section::after,.business-concept::before,.business-concept::after,.identity-guide::before,.identity-guide::after,.campaign-journal::before,.campaign-journal::after,.closing::before,.closing::after { content:none; animation:none; }
+.header { background:#fffffffa; box-shadow:none; border-bottom:1px solid #f2dce4; }
+.desktop-navigation { gap:10px; }
+.desktop-navigation a { color:#a93460; border:1px solid #f1c9d8; border-radius:999px; padding:9px 17px; font-size:11px; }
+.desktop-navigation a:hover { background:#ffe8ef; }
+.mobile-menu { background:#fff; }
+.mobile-menu a { color:#a93460; border-color:#f1d5df; }
+
+/* Story photos become the reference's gently tilted, labeled cards. */
+.about-section .story-chapters { background:#fff; border-radius:0; padding:86px 36px 90px; }
+.story-inner { max-width:1120px; }
+.story-intro { gap:65px; align-items:center; }
+.story-intro h2 span { color:inherit; }
+.story-intro-copy { max-width:440px; }
+.story-intro-copy p { font-size:15px; }
+.story-gallery-toolbar { margin:35px 0 22px; color:var(--bakery-pink); }
+.story-gallery-toolbar .icon-button { background:#fff; border-color:#efbfd0; }
+.story-photo-cards { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:23px; padding:10px 8px 15px; }
+.story-photo-card { min-width:0; border:2px solid #fff; background:#fff0f5; border-radius:17px; padding:10px; color:var(--bakery-pink); transform:rotate(-3deg); transition:transform .25s,border-color .25s; text-align:left; }
+.story-photo-card:nth-child(even) { transform:rotate(3deg); background:#ffe0ea; }
+.story-photo-card.is-active { border-color:var(--bakery-pink); transform:translateY(-7px) rotate(-2deg); }
+.story-photo-label { display:flex; align-items:center; gap:8px; padding:5px 3px 13px; font-size:12px; font-weight:900; }
+.story-photo-label>span:first-child { font-size:9px; }
+.story-photo-label>span:last-child { margin-left:auto; font-size:20px; }
+.story-photo-card img { width:100%; height:270px; object-fit:cover; border-radius:11px; }
+.story-selected-copy { max-width:760px; margin:35px auto 0; text-align:center; }
+.story-selected-copy h3 { color:var(--bakery-pink); font-size:29px; margin-bottom:15px; }
+.story-selected-copy p { font-size:14px; line-height:1.8; }
+.story-gallery-footer { border-top:1px solid #f5dce5; margin-top:35px; padding-top:20px; }
+.story-gallery-footer>span { color:var(--bakery-pink); }
+
+.mission-vision { background:var(--bakery-soft); padding:100px 36px 110px; }
+.mission-vision-inner { max-width:1120px; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:stretch; }
+.mission-vision-heading { grid-column:1/-1; grid-row:auto; text-align:center; padding:0 0 15px; }
+.mission-vision-heading h2 br { display:none; }
+.mission-vision-heading h2 { color:var(--bakery-pink); font-size:clamp(36px,4vw,56px); }
+.mission-vision-heading .eyebrow { margin-bottom:15px; }
+.values-underline { display:none; }
+.value-panel.value-mission,.value-panel.value-vision { grid-column:auto; grid-row:auto; margin:0; padding:25px; background:#fff; box-shadow:none; border:0; border-radius:20px; display:grid; grid-template-columns:110px 1fr; gap:25px; align-items:start; text-align:left; min-height:0; }
+.value-panel .value-photo { position:static; width:110px; height:145px; border:0; border-radius:60px 60px 12px 12px; box-shadow:none; }
+.value-copy h3 { color:var(--bakery-pink); font-size:29px; }
+.value-copy p { font-size:13px; }
+.founders-section { background:#fff; padding:75px 36px 85px; }
+.founders-section .content>p { font-size:14px; }
+
+/* Audience cards. */
+.business-concept { background:#fff; padding:0; }
+.business-wrap>.business-part { max-width:1120px; width:calc(100% - 72px); margin:0 auto; padding:75px 0; }
+.business-wrap>.business-part:first-child { margin:0 auto; border-top:1px solid #f3dbe4; }
+.business-subheading { max-width:none; text-align:left; margin:0 0 35px; display:grid; grid-template-columns:1.2fr 1fr; column-gap:80px; align-items:end; }
+.business-subheading>.eyebrow { grid-column:1; margin-bottom:13px; }
+.business-subheading h3 { grid-column:1; font-size:clamp(33px,3.3vw,47px); margin:0; }
+.business-subheading>p { grid-column:2; grid-row:1/3; font-size:13px; margin:0; max-width:410px; }
+.audience-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
+.audience-grid article { padding:25px 22px; background:#fff0f5; border:0; border-radius:17px; box-shadow:none; }
+.business-concept .audience-grid h4 { color:var(--bakery-pink); font-family:var(--font-body),sans-serif; font-size:20px; font-weight:900; margin-bottom:14px; }
+.audience-grid p { font-size:12px; line-height:1.8; }
+
+/* Product catalog takes its cue from the reference's generous photo-led rows. */
+.products-editorial { width:100%; max-width:none; margin:0; padding:75px max(36px,calc((100% - 1120px)/2)) 90px; background:#fff; }
+.bakery-section-heading { display:flex; justify-content:space-between; align-items:end; gap:65px; margin-bottom:40px; }
+.bakery-section-heading h3 { font-size:clamp(34px,3.7vw,52px); color:var(--bakery-pink); margin-top:13px; }
+.bakery-section-heading>p { max-width:350px; font-size:14px; }
+.product-catalog { background:none; padding:0; }
+.formation-catalog-grid { max-width:none; gap:25px; }
+.formation-photo-card { border:0; border-radius:0; background:#fff; box-shadow:none; overflow:visible; }
+.formation-card-art,.catalog-layered .formation-card-art,.catalog-box .formation-card-art { height:340px; border-radius:20px; background:#fff3f7; padding:18px 20px; align-items:center; overflow:hidden; }
+.formation-card-art img { height:310px; border-radius:12px; object-fit:contain; }
+.formation-card-number { display:none; }
+.product-photo-options { padding:15px 0 0; gap:7px; }
+.product-photo-options button { background:#fff4f8; border-radius:8px; width:45px; height:49px; }
+.product-photo-options button[aria-pressed="true"] { border-color:var(--bakery-pink); }
+.product-catalog-copy { padding:20px 0 0; color:var(--bakery-ink); }
+.product-catalog-copy h5 { font-size:23px; letter-spacing:-.035em; color:var(--bakery-pink); }
+.product-catalog-copy>p { min-height:0; font-size:12px; }
+.product-catalog-copy details { border-color:#f2d6e1; margin-top:18px; }
+.product-catalog-copy summary { font-size:11px; }
+.product-catalog-copy ul { font-size:12px; }
+.formation-note { margin-top:40px; padding:22px 0; border-top:1px solid #f3d9e3; display:flex; align-items:center; gap:14px; }
+.formation-note>span { color:var(--bakery-pink); font-size:30px; }
+.formation-note p { font-size:12px; }
+.formation-note a { margin-left:auto; color:var(--bakery-pink); font-size:11px; font-weight:900; display:flex; align-items:center; gap:10px; }
+.bakery-packaging { margin-top:55px; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+.bakery-packaging-photo { border-radius:22px; overflow:hidden; }
+.bakery-packaging-photo img { width:100%; height:360px; object-fit:cover; }
+.bakery-packaging h4 { font-size:clamp(29px,3vw,42px); color:var(--bakery-pink); margin:18px 0; }
+.bakery-packaging p { font-size:14px; }
+.bakery-button { display:inline-flex; align-items:center; gap:22px; margin-top:25px; border-radius:999px; padding:12px 24px; color:#fff; background:var(--bakery-pink); font-size:12px; font-weight:900; }
+
+/* Brand guide keeps the real artwork and simplifies its presentation. */
+.identity-guide { background:var(--bakery-soft); padding:110px 36px 120px; }
+.identity-board { max-width:1120px; }
+.identity-board-heading { text-align:center; padding:0 0 45px; }
+.identity-board-heading h2>span { color:inherit; }
+.identity-board-heading p { font-size:14px; }
+.identity-mark-grid { gap:24px; }
+.identity-mark-card { background:#fff; border-radius:18px; padding:25px 20px; border:0; box-shadow:none; }
+.identity-mark-card>button { height:220px; }
+.identity-mark-card h3 { color:var(--bakery-pink); font-size:22px; }
+.identity-mark-card>button>img { mix-blend-mode:normal; }
+.mark-expand { background:#fff0f5; border:0; color:var(--bakery-pink); }
+.identity-name-band { background:transparent; border-radius:0; border-bottom:1px solid #dca4b7; margin-top:35px; padding:25px 0 35px; gap:30px; }
+.identity-guide-row { margin-top:55px; grid-template-columns:1fr 3fr; gap:45px; }
+.identity-row-label h3 { font-size:29px; }
+.identity-colors { gap:15px; }
+.identity-color { border-radius:18px; min-height:235px; padding:23px; }
+.identity-color-pink { background:#e5b3c1; }
+.identity-color-cream { background:#f7efde; }
+.identity-color-brown { background:#654136; color:#fff; }
+.color-star { font-size:25px; margin-bottom:22px; }
+.identity-guide .typography-showcase { margin-top:55px; padding-top:45px; border-color:#dca4b7; }
+.typography-heading h3 { font-size:36px; }
+.type-specimen { border:0; border-radius:18px; padding:28px; }
+.identity-guide .type-specimen-display { background:#c43f70; color:#fff; }
+.identity-guide .type-specimen-body { background:#fff; color:var(--bakery-ink); }
+.type-monogram { font-size:92px; margin-top:12px; }
+.identity-guide .type-specimen-display h4 { font-family:var(--font-display),sans-serif; font-weight:400; letter-spacing:0; }
+.type-sample { font-size:28px; margin:22px 0; padding:20px 0; }
+.type-specimen-display .type-sample { font-size:36px; }
+.type-alphabet { font-size:12px; }
+.identity-guide .typography-caption { color:var(--bakery-ink); font-size:11px; }
+
+/* A light, automatically changing pink stage replaces the dark artwork backdrop. */
+.launch-showcase { background:#fff; padding:45px 0; scroll-margin-top:70px; }
+.showcase-stage { min-height:690px; padding:100px max(36px,calc((100% - 1120px)/2)); gap:60px; color:var(--bakery-ink); background:#ffd7e4; transition:background-color 1s; grid-template-columns:.85fr 1.3fr; }
+.showcase-stage.showcase-theme-1 { background:#fce4eb; }
+.showcase-stage.showcase-theme-2 { background:#f4cad9; }
+.showcase-stage.showcase-theme-3 { background:#ffeaf0; }
+.showcase-backgrounds,.showcase-shade { display:none; }
+.showcase-content>.eyebrow { color:var(--bakery-pink); margin-bottom:20px; }
+.showcase-content h3 { font-size:clamp(34px,3.7vw,50px); text-transform:none; color:var(--bakery-pink); }
+.showcase-content>p { font-size:13px; line-height:1.9; max-width:400px; }
+.showcase-card-area>.eyebrow { color:var(--bakery-pink); }
+.showcase-track { --card-width:215px; gap:40px; padding-block:55px; }
+.showcase-card { border:6px solid #fff; border-radius:18px; background:#fff; color:var(--bakery-ink); transform:rotate(4deg); }
+.showcase-card.is-active { border-color:#fff; transform:translateY(-8px) rotate(-3deg) scale(1.18); }
+.showcase-card>img { border-radius:10px; }
+.showcase-card>span { padding:14px 10px; min-height:93px; }
+.showcase-card small { color:var(--bakery-pink); }
+.showcase-card strong { font-family:var(--font-body),sans-serif; font-weight:900; color:var(--bakery-pink); font-size:20px; }
+
+/* Poster design notes read as a clean bakery journal. */
+.campaign-journal { padding:75px 36px 95px; background:#fff; }
+.closing { padding:100px 24px 95px; background:var(--bakery-soft); }
+.closing h2 { color:var(--bakery-pink); }
+.closing-symbol { height:105px; width:60px; }
+.closing .pill { background:var(--bakery-pink); color:#fff; }
+.credits { border-color:#dfb1c1; margin-top:35px; }
+footer { background:#fff; padding:25px 36px; border:0; color:#9f365b; }
+.footer-links { font-size:11px; }
+
+@media(max-width:1000px) {
+  .desktop-navigation a { padding:8px 12px; font-size:10px; }
+  .story-photo-cards { gap:14px; }
+  .story-photo-card img { height:230px; }
+  .story-photo-label { font-size:10px; }
+  .mission-vision-inner { gap:20px; }
+  .value-panel.value-mission,.value-panel.value-vision { grid-template-columns:80px 1fr; gap:18px; padding:22px; }
+  .value-panel .value-photo { width:80px; height:120px; }
+  .audience-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .business-subheading { column-gap:35px; }
+  .formation-card-art,.catalog-layered .formation-card-art,.catalog-box .formation-card-art { height:285px; padding:12px; }
+  .formation-card-art img { height:260px; }
+  .showcase-stage { gap:30px; }
+  .identity-guide-row { grid-template-columns:1fr; gap:25px; }
+  .identity-row-label { max-width:500px; }
+}
+@media(max-width:767px) {
+  .about-section h2,.identity-guide h2,.campaign-journal h2,.closing h2 { font-size:38px; }
+  .about-section .story-chapters { padding:55px 22px 65px; }
+  .story-intro { display:block; }
+  .story-intro-copy { max-width:none; margin-top:22px; }
+  .story-intro-copy p { font-size:14px; }
+  .story-gallery-toolbar { margin:25px 0 18px; }
+  .story-photo-cards { grid-template-columns:1fr 1fr; gap:18px 12px; padding:9px 3px 12px; }
+  .story-photo-card { padding:7px; border-radius:13px; }
+  .story-photo-card img { height:190px; border-radius:8px; }
+  .story-photo-label { gap:5px; font-size:9px; padding:3px 1px 9px; }
+  .story-photo-label>span:first-child { font-size:8px; }
+  .story-photo-label>span:last-child { font-size:14px; }
+  .story-selected-copy { margin-top:28px; text-align:left; }
+  .story-selected-copy h3 { font-size:26px; }
+  .story-selected-copy p { font-size:13px; }
+  .story-gallery-footer { display:block; margin-top:25px; padding-top:15px; }
+  .story-gallery-footer>span { font-size:8px; gap:10px; }
+  .story-gallery-footer small { display:block; margin-top:10px; font-size:9px; }
+  .mission-vision,.identity-guide { padding:85px 22px 95px; }
+  .mission-vision-inner { grid-template-columns:1fr; gap:20px; }
+  .mission-vision-heading { padding-bottom:8px; }
+  .mission-vision-heading h2 { font-size:35px; }
+  .value-panel.value-mission,.value-panel.value-vision { grid-template-columns:80px 1fr; padding:20px; gap:17px; }
+  .value-copy h3 { font-size:26px; margin-bottom:10px; }
+  .value-copy p { font-size:12px; }
+  .value-copy .eyebrow { font-size:8px; }
+  .founders-section { padding:55px 22px 65px; }
+  .business-wrap>.business-part { width:calc(100% - 44px); padding:50px 0; }
+  .business-subheading { display:block; margin-bottom:25px; }
+  .business-subheading h3 { font-size:33px; }
+  .business-subheading>p { font-size:13px; margin-top:18px; }
+  .audience-grid { gap:12px; }
+  .audience-grid article { padding:20px 16px; border-radius:13px; }
+  .business-concept .audience-grid h4 { font-size:18px; }
+  .audience-grid p { font-size:11px; }
+  .products-editorial { width:100%; margin:0; padding:50px 22px 65px; }
+  .bakery-section-heading { display:block; margin-bottom:27px; }
+  .bakery-section-heading h3 { font-size:34px; }
+  .bakery-section-heading>p { max-width:none; margin-top:20px; font-size:13px; }
+  .product-catalog { padding:0; }
+  .formation-catalog-grid { grid-template-columns:1fr; gap:38px; max-width:420px; }
+  .formation-card-art,.catalog-layered .formation-card-art,.catalog-box .formation-card-art { height:350px; padding:18px; }
+  .formation-card-art img { height:315px; }
+  .product-catalog-copy { padding:18px 0 0; }
+  .product-catalog-copy h5 { font-size:24px; }
+  .formation-note { flex-wrap:wrap; gap:10px; padding:20px 0; margin-top:30px; }
+  .formation-note p { max-width:calc(100% - 40px); font-size:11px; }
+  .formation-note a { margin:5px 0 0 35px; font-size:11px; }
+  .bakery-packaging { grid-template-columns:1fr; gap:28px; margin-top:35px; }
+  .bakery-packaging-photo img { height:260px; }
+  .bakery-packaging h4 { font-size:29px; }
+  .bakery-packaging p { font-size:13px; }
+  .identity-board-heading { padding-bottom:30px; }
+  .identity-board-heading p { font-size:13px; }
+  .identity-mark-grid { grid-template-columns:1fr; gap:18px; }
+  .identity-mark-card { padding:22px; }
+  .identity-mark-card>button { height:245px; }
+  .identity-name-band { grid-template-columns:1fr; gap:18px; margin-top:25px; padding:15px 0 28px; }
+  .identity-name-band p { font-size:12px; }
+  .identity-guide-row { margin-top:35px; gap:23px; }
+  .identity-colors { grid-template-columns:1fr; gap:12px; }
+  .identity-color { min-height:190px; padding:23px; }
+  .color-star { margin-bottom:13px; }
+  .identity-color p { margin-bottom:15px; }
+  .identity-guide .typography-showcase { margin-top:40px; padding-top:35px; }
+  .typography-heading { display:block; }
+  .typography-heading h3 { font-size:32px; }
+  .typography-heading>p { margin-top:15px; font-size:12px; }
+  .type-specimens { grid-template-columns:1fr; gap:18px; }
+  .type-specimen { padding:23px; }
+  .type-monogram { font-size:85px; }
+  .type-sample { font-size:27px; }
+  .type-specimen-display .type-sample { font-size:34px; }
+  .launch-showcase { padding:20px 0; }
+  .showcase-stage { min-height:840px; grid-template-columns:1fr; gap:25px; padding:85px 22px 100px; }
+  .showcase-content h3 { font-size:35px; }
+  .showcase-content>p { font-size:12px; margin-top:18px; max-width:none; }
+  .showcase-content>.eyebrow { margin-bottom:15px; font-size:8px; }
+  .showcase-track { --card-width:180px; gap:40px; padding-block:45px; }
+  .showcase-card.is-active { transform:translateY(-6px) rotate(-3deg) scale(1.16); }
+  .showcase-card>span { min-height:85px; padding:12px 9px; }
+  .showcase-card strong { font-size:18px; }
+  .campaign-journal { padding:45px 22px 65px; }
+  .closing { padding:85px 22px 90px; }
+  .closing h2 { font-size:35px; }
+  .credits>p { font-size:11px; }
+  footer { flex-direction:column; text-align:center; padding:25px 22px; gap:20px; }
+  .footer-links { justify-content:center; flex-wrap:wrap; gap:15px; font-size:10px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .story-photo-card,.showcase-stage { transition:none; }
+}
+
+/* Details open on hover or selection. Cards start with their titles only. */
+.audience-grid { align-items:start; }
+.audience-grid .audience-card { padding:0; }
+.business-concept .audience-card h4 { margin:0; }
+.audience-card h4 button { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:85px; padding:15px 17px; border-radius:inherit; text-align:left; line-height:1.14; }
+.audience-card button svg { flex-shrink:0; transition:transform .22s ease; }
+.audience-card[data-expanded="true"] button svg { transform:rotate(180deg); }
+.audience-reveal { display:grid; grid-template-rows:0fr; opacity:0; transition:grid-template-rows .25s ease,opacity .2s ease; }
+.audience-reveal>div { min-height:0; overflow:hidden; }
+.audience-card[data-expanded="true"] .audience-reveal { grid-template-rows:1fr; opacity:1; }
+.audience-reveal p { margin:0; padding:0 17px 16px; }
+@media(max-width:767px) {
+  .audience-card h4 button { min-height:79px; padding-inline:13px; }
+  .audience-reveal p { padding-inline:13px; }
+}
