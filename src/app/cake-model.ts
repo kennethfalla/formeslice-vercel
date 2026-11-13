@@ -132,6 +132,7 @@ export function buildCake(recipe: CakeRecipe, texture: Texture) {
   const plainCream = new MeshStandardMaterial({ color: "#f5e7d3", roughness: .62 });
   const radius = 1.42;
   const layers: Group[] = [];
+  const toppings = new Group();
   const triangle = recipe.formation === "triangle";
 
   function addBand(parent: Group, material: MeshStandardMaterial, y: number, height: number, radius: number, sector?: { start: number; end: number; center: number }) {
@@ -239,12 +240,14 @@ export function buildCake(recipe: CakeRecipe, texture: Texture) {
       layer.add(swirl);
     }
     const present = [...new Set(recipe.flavors.filter(index => index !== null))];
+    toppings.position.y = top + .081;
+    layer.add(toppings);
     present.forEach((selection, index) => {
       const angle = index * 2.06 + .45;
-      placeGarnish(layer, flavors[selection], top + .081, angle, .86, 1.65);
-      placeGarnish(layer, flavors[selection], top + .081, angle + .38, .67, .92);
+      placeGarnish(toppings, flavors[selection], 0, angle, .86, 1.65);
+      placeGarnish(toppings, flavors[selection], 0, angle + .38, .67, .92);
     });
   }
-  return { cake, layers };
+  return { cake, layers, toppings };
 }
 

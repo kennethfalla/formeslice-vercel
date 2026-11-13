@@ -7,8 +7,8 @@ import {
 } from "three";
 import { buildCake, createSpongeTexture, disposeMeshes } from "./cake-model";
 import { storyCakeFlavors } from "./cake-recipe";
+import { getStoryLayers, type StoryCakePose } from "./story-cake-layout";
 
-export type StoryCakePose = { separation: number; chapter: number };
 
 export function StoryCakeScene({ pose, draw, onReady }: {
   pose: RefObject<StoryCakePose>;
@@ -63,37 +63,47 @@ export function StoryCakeScene({ pose, draw, onReady }: {
       render();
       onReady(true);
     });
-    const { cake, layers } = buildCake({ formation: "stack", flavors: [...storyCakeFlavors].reverse() }, sponge.texture);
+    const { cake, layers, toppings } = buildCake({ formation: "stack", flavors: [...storyCakeFlavors].reverse() }, sponge.texture);
     scene.add(cake);
+    let aspect = 1;
 
     function render() {
       if (contextLost) return;
       const { separation, chapter } = pose.current;
-      const center = 1.02 + separation * .84;
-      camera.position.set(2.3 - separation * 1.2, center + 2.1 - separation * 1.35, 7.2);
+      const assembledHeight = Math.max(1.62, 1.87 / aspect);
+      const openHeight = Math.max(2.18, 1.95 / aspect);
+      const halfHeight = assembledHeight + (openHeight - assembledHeight) * separation;
+      const center = 1.24 + separation * 1.16;
+      camera.position.set(1.5 * (1 - separation), center + 1.52 - separation * 1.29, 7.2);
       camera.lookAt(0, center, 0);
-      camera.zoom = 1.16 - separation * .16;
+      camera.top = halfHeight;
+      camera.bottom = -halfHeight;
+      camera.left = -halfHeight * aspect;
+      camera.right = halfHeight * aspect;
       camera.updateProjectionMatrix();
 
+      const layout = getStoryLayers(chapter);
+      const openWidth = openHeight * aspect * .80 / 1.42;
+      cake.scale.x = 1 + (openWidth - 1) * separation;
       layers.forEach((layer, index) => {
-        const readingOrder = layers.length - 1 - index;
-        const emphasis = Math.max(0, 1 - Math.abs(readingOrder - chapter)) * separation;
-        const side = readingOrder % 2 === 0 ? .24 : -.24;
-        layer.position.set(side * separation + emphasis * .22, .12 + index * (.4 + separation * .56), emphasis * .48);
-        layer.rotation.z = side * separation * .22;
+        const { top, height, emphasis } = layout[layers.length - 1 - index];
+        const base = .12 + index * .4;
+        const openBase = center + halfHeight * (1 - 2 * (top + height));
+        layer.position.set(0, base + (openBase - base) * separation, emphasis * separation * .16);
+        layer.scale.y = 1 + (2 * halfHeight * height / .4 - 1) * separation;
       });
+      toppings.position.y = .407 - separation * .025;
+      toppings.scale.set(1 / cake.scale.x, 1 / layers[layers.length - 1].scale.y, 1);
+      plate.position.y = layers[0].position.y - .065;
+      plate.scale.x = cake.scale.x;
+      ground.material.opacity = .16 * (1 - separation);
       renderer.render(scene, camera);
     }
 
     function resize() {
       const { clientWidth: width, clientHeight: height } = stage;
       if (!width || !height) return;
-      const aspect = width / height;
-      const halfHeight = Math.max(2.22, 2.12 / aspect);
-      camera.top = halfHeight;
-      camera.bottom = -halfHeight;
-      camera.left = -halfHeight * aspect;
-      camera.right = halfHeight * aspect;
+      aspect = width / height;
       renderer.setSize(width, height, false);
       render();
     }

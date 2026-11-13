@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { flavors, storyCakeFlavors } from "./cake-recipe";
-import type { StoryCakePose } from "./story-cake-scene";
+import { getStoryLayers, type StoryCakePose } from "./story-cake-layout";
 
 const CakeScene = dynamic(() => import("./story-cake-scene").then(module => module.StoryCakeScene), { ssr: false });
 
@@ -18,9 +18,8 @@ const chapters = [
 
 export function BrandStory() {
   const section = useRef<HTMLElement>(null);
-  const pin = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
-  const cake = useRef<HTMLDivElement>(null);
+  const visual = useRef<HTMLDivElement>(null);
   const pose = useRef<StoryCakePose>({ separation: 0, chapter: 0 });
   const draw = useRef<(() => void) | null>(null);
   const [active, setActive] = useState<number | null>(null);
@@ -28,68 +27,56 @@ export function BrandStory() {
   const [sceneReady, setSceneReady] = useState(false);
 
   useEffect(() => {
-    if (!section.current || !pin.current || !track.current || !cake.current) return;
+    if (!section.current || !track.current || !visual.current) return;
     const root = section.current;
-    const visual: HTMLDivElement = pin.current;
-    const timeline = track.current;
-    const stage: HTMLDivElement = cake.current;
-
+    const stage = visual.current;
+    const stops = Array.from(track.current.children);
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
-    const stops = Array.from(timeline.querySelectorAll<HTMLElement>("article"));
-    const clamp = (value: number) => Math.min(1, Math.max(0, value));
     let frame = 0;
     let inRange = false;
+    let lastFrame = 0;
     let initialized = false;
-    let previousTime = 0;
-    let focusChapter: number | null = null;
+    let selected: number | null = null;
 
     function update(time: number) {
       frame = 0;
-      const top = visual.getBoundingClientRect().top;
-      const height = visual.offsetHeight;
-      const bottom = top + height;
-      const focus = window.innerWidth > 740
-        ? top + height * .53
-        : bottom + Math.min(145, Math.max(60, (window.innerHeight - bottom) * .38));
-      const centers = stops.map(stop => {
-        const box = stop.getBoundingClientRect();
-        return box.top + box.height / 2;
-      });
-      const first = stops[0].getBoundingClientRect();
-      const spread = clamp((focus - first.top + first.height * .21) / (first.height * .6));
-      const separation = motion.matches ? 1 : spread * spread * (3 - 2 * spread);
-
-      let chapter = 0;
-      for (let index = 1; index < centers.length; index++) {
-        chapter += clamp((focus - centers[index - 1]) / (centers[index] - centers[index - 1]));
-      }
-
-      if (motion.matches) chapter = Math.round(chapter);
-      const selected = spread > .18 ? Math.round(chapter) : null;
-      if (selected !== focusChapter) {
-        focusChapter = selected;
-        setActive(selected);
+      const pinTop = Number.parseFloat(getComputedStyle(stage).top);
+      const first = stops[1].getBoundingClientRect();
+      const step = first.height;
+      const position = (pinTop - first.top) / step;
+      const spread = Math.min(1, Math.max(0, 1 + position));
+      const separation = motion.matches ? Number(spread >= .5) : spread * spread * (3 - 2 * spread);
+      const chapter = Math.min(chapters.length - 1, Math.max(0, position));
+      const next = spread >= .5 ? Math.round(chapter) : null;
+      if (next !== selected) {
+        selected = next;
+        setActive(next);
       }
 
       const current = pose.current;
-      const elapsed = previousTime ? Math.min(time - previousTime, 40) : 16;
-      const blend = motion.matches || !initialized ? 1 : 1 - Math.exp(-elapsed / 85);
+      const elapsed = lastFrame ? Math.min(time - lastFrame, 40) : 16;
+      const blend = motion.matches || !initialized ? 1 : 1 - Math.exp(-elapsed / 72);
+      const target = motion.matches ? Math.round(chapter) : chapter;
+      const moving = Math.abs(current.separation - separation) + Math.abs(current.chapter - target) > .002;
+      current.separation = moving ? current.separation + (separation - current.separation) * blend : separation;
+      current.chapter = moving ? current.chapter + (target - current.chapter) * blend : target;
       initialized = true;
-      previousTime = time;
-      const pending = Math.abs(current.separation - separation) + Math.abs(current.chapter - chapter) > .002;
-      current.separation = pending ? current.separation + (separation - current.separation) * blend : separation;
-      current.chapter = pending ? current.chapter + (chapter - current.chapter) * blend : chapter;
+      lastFrame = moving ? time : 0;
+
       stage.style.setProperty("--cake-spread", String(current.separation));
+      getStoryLayers(current.chapter).forEach(({ top, height }, index) => {
+        stage.style.setProperty(`--layer-top-${index}`, `${top * 100}%`);
+        stage.style.setProperty(`--layer-height-${index}`, `${height * 100}%`);
+      });
       draw.current?.();
-      if (pending) schedule();
-      else previousTime = 0;
+      if (moving) schedule();
     }
 
     function schedule() {
       if (inRange && !frame) frame = requestAnimationFrame(update);
     }
 
-    const viewport = new IntersectionObserver(([entry]) => {
+    const observer = new IntersectionObserver(([entry]) => {
       inRange = entry.isIntersecting;
       if (inRange) {
         setLoadScene(true);
@@ -97,17 +84,17 @@ export function BrandStory() {
       } else {
         cancelAnimationFrame(frame);
         frame = 0;
+        lastFrame = 0;
         initialized = false;
-        previousTime = 0;
       }
-    }, { rootMargin: "230px 0px" });
-    viewport.observe(root);
+    }, { rootMargin: "200px 0px" });
+    observer.observe(root);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     motion.addEventListener("change", schedule);
 
     return () => {
-      viewport.disconnect();
+      observer.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
@@ -117,7 +104,49 @@ export function BrandStory() {
 
   return <section className="story-chapters" id="story" aria-labelledby="story-title" ref={section}>
     <div className="about-story-layout">
-      <div className="about-story-visual" ref={pin}>
+      <div className="about-story-track" ref={track} aria-hidden="true">
+        <div />
+        {chapters.map(chapter => <div key={chapter.id} id={`story-${chapter.id}`} />)}
+      </div>
+      <div className="about-story-visual" ref={visual} data-live={sceneReady}>
+        <div className="about-story-cake" aria-hidden="true">
+          <div className="story-cake-fallback">
+            <Image src="/images/details/products/cutouts/layer-1.webp" width={343} height={310} alt="" sizes="70vw" />
+          </div>
+          {loadScene && <CakeScene pose={pose} draw={draw} onReady={setSceneReady} />}
+        </div>
+        <header className="about-story-intro" data-visible={active === null}>
+          <span className="eyebrow">The idea behind ForméSlice</span>
+          <h2 id="story-title">About Us</h2>
+          <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
+          <a className="story-action" href="#story-beginning" tabIndex={active === null ? undefined : -1}>
+            Explore the layers <ArrowDown size={15} aria-hidden="true" />
+          </a>
+        </header>
+        {chapters.map((chapter, index) => {
+          const flavor = flavors[storyCakeFlavors[index]];
+          return <article className="about-story-layer" key={chapter.id} data-active={active === index}
+            aria-labelledby={`story-${chapter.id}-title`}
+            style={{
+              "--layer-top": `var(--layer-top-${index}, 0%)`,
+              "--layer-height": `var(--layer-height-${index}, 0%)`,
+              "--layer-color": flavor.sponge,
+              "--layer-icing": flavor.icing,
+            } as CSSProperties}>
+            <span className="about-layer-label" aria-hidden="true">{chapter.short}</span>
+            <div className="about-layer-content" tabIndex={active === index ? 0 : undefined}>
+              <div>
+                <span className="eyebrow">{chapter.short}</span>
+                <h3 id={`story-${chapter.id}-title`}>{chapter.title}</h3>
+                <p>{chapter.copy}</p>
+              </div>
+              <figure className="about-story-photo">
+                <Image src={`/images/details/story/${chapter.image}`} width={chapter.width} height={chapter.height}
+                  alt={chapter.alt} style={{ objectPosition: chapter.position }} sizes="200px" />
+              </figure>
+            </div>
+          </article>;
+        })}
         <nav className="about-story-buttons" aria-label="About Us chapters">
           {chapters.map((chapter, index) => <a key={chapter.id} href={`#story-${chapter.id}`}
             aria-current={active === index ? "location" : undefined}
@@ -125,39 +154,6 @@ export function BrandStory() {
             <span aria-hidden="true" />{chapter.short}
           </a>)}
         </nav>
-        <div className="about-story-cake" ref={cake} data-live={sceneReady}>
-          <div className="story-cake-fallback" aria-hidden="true">
-            <Image src="/images/details/products/cutouts/layer-1.webp" width={343} height={310} alt="" sizes="(max-width: 740px) 230px, 400px" />
-            <div className="story-cake-fallback-layers">
-              {storyCakeFlavors.map((flavor, index) => <span key={flavor} data-active={active === index}
-                style={{ "--sponge": flavors[flavor].sponge, "--frosting": flavors[flavor].icing } as CSSProperties} />)}
-            </div>
-          </div>
-          {loadScene && <CakeScene pose={pose} draw={draw} onReady={setSceneReady} />}
-        </div>
-      </div>
-      <div className="about-story-track" ref={track}>
-        <header className="about-story-intro">
-          <div>
-            <span className="eyebrow">The idea behind ForméSlice</span>
-            <h2 id="story-title">About Us</h2>
-            <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
-            <a className="story-action" href="#story-beginning">Explore the layers <ArrowDown size={15} aria-hidden="true" /></a>
-          </div>
-        </header>
-        {chapters.map((chapter, index) => <article className="about-story-chapter" key={chapter.id} id={`story-${chapter.id}`}
-          aria-labelledby={`story-${chapter.id}-title`}
-          style={{ "--chapter-color": flavors[storyCakeFlavors[index]].icing } as CSSProperties}>
-          <div className="about-story-panel">
-            <span className="eyebrow">{chapter.short}</span>
-            <h3 id={`story-${chapter.id}-title`}>{chapter.title}</h3>
-            <p>{chapter.copy}</p>
-            <figure className="about-story-photo">
-              <Image src={`/images/details/story/${chapter.image}`} width={chapter.width} height={chapter.height}
-                alt={chapter.alt} style={{ objectPosition: chapter.position }} sizes="(max-width: 740px) 90vw, 420px" />
-            </figure>
-          </div>
-        </article>)}
       </div>
     </div>
   </section>;
