@@ -70,10 +70,10 @@ export function StoryCakeScene({ pose, draw, onReady }: {
     function render() {
       if (contextLost) return;
       const { separation, chapter } = pose.current;
-      const assembledHeight = Math.max(1.62, 1.87 / aspect);
+      const assembledHeight = Math.max(1.74, 1.91 / aspect);
       const openHeight = Math.max(2.18, 1.95 / aspect);
       const halfHeight = assembledHeight + (openHeight - assembledHeight) * separation;
-      const center = 1.24 + separation * 1.16;
+      const center = 1.16 + separation * 1.24;
       camera.position.set(1.5 * (1 - separation), center + 1.52 - separation * 1.29, 7.2);
       camera.lookAt(0, center, 0);
       camera.top = halfHeight;

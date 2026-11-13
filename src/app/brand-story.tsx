@@ -110,42 +110,44 @@ export function BrandStory() {
         {chapters.map(chapter => <div key={chapter.id} id={`story-${chapter.id}`} />)}
       </div>
       <div className="about-story-visual" ref={visual} data-live={sceneReady}>
-        <div className="about-story-cake" aria-hidden="true">
-          <div className="story-cake-fallback">
-            <Image src="/images/details/products/cutouts/layer-1.webp" width={343} height={310} alt="" sizes="70vw" />
-          </div>
-          {loadScene && <CakeScene pose={pose} draw={draw} onReady={setSceneReady} />}
-        </div>
-        <header className="about-story-intro" data-visible={active === null}>
-          <span className="eyebrow">The idea behind ForméSlice</span>
-          <h2 id="story-title">About Us</h2>
-          <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
-        </header>
-        {chapters.map((chapter, index) => {
-          const flavor = flavors[storyCakeFlavors[index]];
-          return <article className="about-story-layer" key={chapter.id} data-active={active === index}
-            aria-labelledby={`story-${chapter.id}-title`}
-            style={{
-              "--layer-top": `var(--layer-top-${index}, 0%)`,
-              "--layer-height": `var(--layer-height-${index}, 0%)`,
-              "--layer-reveal": `var(--layer-reveal-${index}, 0)`,
-              "--layer-color": flavor.sponge,
-              "--layer-icing": flavor.icing,
-            } as CSSProperties}>
-            <span className="about-layer-label" aria-hidden="true">{chapter.short}</span>
-            <div className="about-layer-content">
-              <div>
-                <span className="eyebrow">{chapter.short}</span>
-                <h3 id={`story-${chapter.id}-title`}>{chapter.title}</h3>
-                <p>{chapter.copy}</p>
-              </div>
-              <figure className="about-story-photo">
-                <Image src={`/images/details/story/${chapter.image}`} width={chapter.width} height={chapter.height}
-                  alt={chapter.alt} style={{ objectPosition: chapter.position }} sizes="200px" />
-              </figure>
+        <div className="about-story-stage">
+          <div className="about-story-cake" aria-hidden="true">
+            <div className="story-cake-fallback">
+              <Image src="/images/details/products/cutouts/layer-1.webp" width={343} height={310} alt="" sizes="70vw" />
             </div>
-          </article>;
-        })}
+            {loadScene && <CakeScene pose={pose} draw={draw} onReady={setSceneReady} />}
+          </div>
+          <header className="about-story-intro" data-visible={active === null}>
+            <span className="eyebrow">The idea behind ForméSlice</span>
+            <h2 id="story-title">About Us</h2>
+            <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
+          </header>
+          {chapters.map((chapter, index) => {
+            const flavor = flavors[storyCakeFlavors[index]];
+            return <article className="about-story-layer" key={chapter.id} data-active={active === index}
+              aria-labelledby={`story-${chapter.id}-title`}
+              style={{
+                "--layer-top": `var(--layer-top-${index}, 0%)`,
+                "--layer-height": `var(--layer-height-${index}, 0%)`,
+                "--layer-reveal": `var(--layer-reveal-${index}, 0)`,
+                "--layer-color": flavor.sponge,
+                "--layer-icing": flavor.icing,
+              } as CSSProperties}>
+              <span className="about-layer-label" aria-hidden="true">{chapter.short}</span>
+              <div className="about-layer-content">
+                <div>
+                  <span className="eyebrow">{chapter.short}</span>
+                  <h3 id={`story-${chapter.id}-title`}>{chapter.title}</h3>
+                  <p>{chapter.copy}</p>
+                </div>
+                <figure className="about-story-photo">
+                  <Image src={`/images/details/story/${chapter.image}`} width={chapter.width} height={chapter.height}
+                    alt={chapter.alt} style={{ objectPosition: chapter.position }} sizes="200px" />
+                </figure>
+              </div>
+            </article>;
+          })}
+        </div>
         <nav className="about-story-buttons" aria-label="About Us chapters">
           {chapters.map((chapter, index) => <a key={chapter.id} href={`#story-${chapter.id}`}
             aria-current={active === index ? "location" : undefined}
