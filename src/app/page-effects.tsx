@@ -20,9 +20,6 @@ type Shot = readonly [selector: string, effect: keyof typeof reveals, delay?: nu
 const shots: readonly Shot[] = [
   [".brand-hero-copy .eyebrow, .brand-hero-copy p, .brand-hero-actions", "drift"],
   [".brand-hero h1", "curtain", .06],
-  [".about-banner-copy", "curtain"],
-  [".about-story-photo", "peel"],
-  [".about-story-panel", "right", .12],
   [".about-purpose-copy", "left"],
   [".about-purpose-photo", "peel", .1],
   [".about-benefits-heading", "drift"],
@@ -56,7 +53,7 @@ const shots: readonly Shot[] = [
   [".closing > p, .closing .pill, .credits, footer > *", "drift", .1],
 ];
 
-const driftingMedia = ".about-story-photo > img, .about-purpose-photo > img, .reference-hero-product, .reference-feature-image img, .identity-mark-card img, .campaign-editorial-figure img";
+const driftingMedia = ".about-purpose-photo > img, .reference-hero-product, .reference-feature-image img, .identity-mark-card img, .campaign-editorial-figure img";
 
 export function PageEffects() {
   useEffect(() => {

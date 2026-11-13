@@ -25,7 +25,7 @@
 .closing-syrup { color:var(--ganache); }
 
 @media(prefers-reduced-motion:no-preference) {
-  .portfolio-main :is(.about-story-photo,.about-purpose-photo)>img {
+  .portfolio-main .about-purpose-photo>img {
     scale:1.1;
     translate:0 var(--media-drift,0px);
   }

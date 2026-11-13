@@ -10,6 +10,8 @@ export const flavors = [
 export type Flavor = typeof flavors[number];
 export type CakeRecipe = { formation: "triangle" | "stack"; flavors: (number | null)[] };
 
+export const storyCakeFlavors = [4, 5, 0, 1] as const;
+
 export function cakeFormationLabel(recipe: CakeRecipe) {
   return recipe.formation === "triangle" ? "6-slice Triangle wheel" : `${recipe.flavors.length}-layer Stack`;
 }
