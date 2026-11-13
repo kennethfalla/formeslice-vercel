@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { ArrowDown } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { flavors, storyCakeFlavors } from "./cake-recipe";
 import { getStoryLayers, type StoryCakePose } from "./story-cake-layout";
@@ -64,9 +63,11 @@ export function BrandStory() {
       lastFrame = moving ? time : 0;
 
       stage.style.setProperty("--cake-spread", String(current.separation));
-      getStoryLayers(current.chapter).forEach(({ top, height }, index) => {
+      getStoryLayers(current.chapter).forEach(({ top, height, emphasis }, index) => {
         stage.style.setProperty(`--layer-top-${index}`, `${top * 100}%`);
         stage.style.setProperty(`--layer-height-${index}`, `${height * 100}%`);
+        const reveal = Math.min(current.separation, emphasis);
+        stage.style.setProperty(`--layer-reveal-${index}`, String(Math.max(0, (reveal - .76) / .24)));
       });
       draw.current?.();
       if (moving) schedule();
@@ -119,9 +120,6 @@ export function BrandStory() {
           <span className="eyebrow">The idea behind ForméSlice</span>
           <h2 id="story-title">About Us</h2>
           <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
-          <a className="story-action" href="#story-beginning" tabIndex={active === null ? undefined : -1}>
-            Explore the layers <ArrowDown size={15} aria-hidden="true" />
-          </a>
         </header>
         {chapters.map((chapter, index) => {
           const flavor = flavors[storyCakeFlavors[index]];
@@ -130,11 +128,12 @@ export function BrandStory() {
             style={{
               "--layer-top": `var(--layer-top-${index}, 0%)`,
               "--layer-height": `var(--layer-height-${index}, 0%)`,
+              "--layer-reveal": `var(--layer-reveal-${index}, 0)`,
               "--layer-color": flavor.sponge,
               "--layer-icing": flavor.icing,
             } as CSSProperties}>
             <span className="about-layer-label" aria-hidden="true">{chapter.short}</span>
-            <div className="about-layer-content" tabIndex={active === index ? 0 : undefined}>
+            <div className="about-layer-content">
               <div>
                 <span className="eyebrow">{chapter.short}</span>
                 <h3 id={`story-${chapter.id}-title`}>{chapter.title}</h3>
