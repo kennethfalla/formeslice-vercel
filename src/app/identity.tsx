@@ -6,7 +6,7 @@ import { SyrupEdge } from "./syrup-edge";
 const marks = [
   { src: "Primarylogo.png", width: 1400, height: 940, title: "Primary logo", subtitle: "The full ForméSlice signature", index: 1 },
   { src: "Secondarylogo.png", width: 514, height: 918, title: "Secondary logo", subtitle: "A smaller, sweeter brand mark", index: 2 },
-  { src: "Sketch.jpg", width: 1791, height: 1860, title: "Original sketch", subtitle: "Where the identity began", index: 0 },
+  { src: "Sketch.jpg", width: 2085, height: 1792, title: "Original sketch", subtitle: "Where the identity began", index: 0 },
 ];
 const palette = [
   { name: "Strawberry pink", hex: "#E5B3C1", rgb: "229 · 179 · 193", role: "Warmth & playful personality", className: "pink" },

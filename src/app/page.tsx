@@ -17,7 +17,7 @@ import { Logo } from "./logo";
 import { useVisibleAutoplay } from "./use-visible-autoplay";
 
 const archive = [
-  { src: "Sketch.jpg", title: "The original sketch", description: "The original hand-drawn ForméSlice identity study.", width: 1791, height: 1860 },
+  { src: "Sketch.jpg", title: "The original sketch", description: "The original hand-drawn ForméSlice identity study, with notes linking the F to a layer cake and the S to a triangular slice.", width: 2085, height: 1792 },
   { src: "Primarylogo.png", title: "The primary logo", description: "The updated ForméSlice primary wordmark, with rounded pink and cream lettering.", width: 1400, height: 940 },
   { src: "Secondarylogo.png", title: "The secondary logo", description: "The updated ForméSlice secondary symbol: a cherry-topped F and cake-shaped S.", width: 514, height: 918 },
   { src: "Firsteverbrandpost.png", title: "Our first official brand post", description: "Your Flavor. Your Formation. The first ForméSlice social media artwork.", width: 1080, height: 1080 },
