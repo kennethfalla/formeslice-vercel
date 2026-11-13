@@ -104,6 +104,11 @@ export function BrandStory() {
   }, []);
 
   return <section className="story-chapters" id="story" aria-labelledby="story-title" ref={section}>
+    <header className="about-story-intro">
+      <span className="eyebrow">The idea behind ForméSlice</span>
+      <h2 id="story-title">About Us</h2>
+      <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
+    </header>
     <div className="about-story-layout">
       <div className="about-story-track" ref={track} aria-hidden="true">
         <div />
@@ -117,11 +122,6 @@ export function BrandStory() {
             </div>
             {loadScene && <CakeScene pose={pose} draw={draw} onReady={setSceneReady} />}
           </div>
-          <header className="about-story-intro" data-visible={active === null}>
-            <span className="eyebrow">The idea behind ForméSlice</span>
-            <h2 id="story-title">About Us</h2>
-            <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
-          </header>
           {chapters.map((chapter, index) => {
             const flavor = flavors[storyCakeFlavors[index]];
             return <article className="about-story-layer" key={chapter.id} data-active={active === index}
