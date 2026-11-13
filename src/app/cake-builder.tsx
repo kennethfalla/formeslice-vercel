@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Box, CakeSlice, Check, GripVertical, Layers } from "lucide-react";
+import { Box, CakeSlice, Check, Download, GripVertical, Layers, RotateCcw, RotateCw, Share } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { flavors, type CakeRecipe } from "./cake-recipe";
+import { createCakeReceipt, downloadCakeReceipt } from "./cake-receipt";
+import { cakeFormationLabel, flavors, type CakeRecipe } from "./cake-recipe";
 
 const LiveCake = dynamic(() => import("./cake-scene").then(module => module.CakeScene), { ssr: false, loading: () => <p className="cake-scene-loading">Preparing the 3D preview…</p> });
 const steps = ["Formation", "Flavor count", "Add flavors"];
@@ -19,8 +20,11 @@ export function CakeBuilder() {
   const [angle, setAngle] = useState(.18);
   const [dragging, setDragging] = useState(false);
   const [ready, setReady] = useState(false);
-  const [viewAvailable, setViewAvailable] = useState(true);
+  const [viewAvailable, setViewAvailable] = useState<boolean | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [receipt, setReceipt] = useState<{ recipe: CakeRecipe; file?: File; message: string }>();
   const stage = useRef<HTMLDivElement>(null);
+  const capture = useRef<(() => HTMLCanvasElement | null) | null>(null);
   const stepTitle = useRef<HTMLHeadingElement>(null);
   const drag = useRef<{ x: number; angle: number } | null>(null);
   const maxFlavors = formation === "triangle" ? 6 : 4;
@@ -31,6 +35,10 @@ export function CakeBuilder() {
     formation,
     flavors: Array.from({ length: pieces }, (_, index) => slots[index % count]),
   }), [formation, pieces, slots, count]);
+  const cakeComplete = added.length === count;
+  const currentReceipt = receipt?.recipe === recipe ? receipt : undefined;
+  const shareFile = currentReceipt?.file;
+  const canShare = shareFile && navigator.canShare?.({ files: [shareFile] });
 
   useEffect(() => {
     if (!stage.current) return;
@@ -76,6 +84,29 @@ export function CakeBuilder() {
     changeStep(0);
   }
 
+  async function saveReceipt() {
+    if (!cakeComplete || saving) return;
+    setSaving(true);
+    try {
+      const file = await createCakeReceipt(recipe, capture.current?.() ?? null);
+      downloadCakeReceipt(file);
+      setReceipt({ recipe, file, message: "Receipt download started." });
+    } catch {
+      setReceipt({ recipe, message: "The receipt couldn’t be saved. Try again." });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function shareReceipt(file: File) {
+    try {
+      await navigator.share({ files: [file] });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      setReceipt({ recipe, file, message: "Sharing is unavailable. You can download the PNG again." });
+    }
+  }
+
   return <section id="cake-builder" className="cake-builder" aria-labelledby="cake-builder-title">
     <header className="cake-builder-heading">
       <span className="eyebrow">THE FORMÉSLICE STUDIO</span>
@@ -102,17 +133,21 @@ export function CakeBuilder() {
           }}
           onLostPointerCapture={() => { drag.current = null; setDragging(false); }}>
           <span className="cake-builder-badge"><Box size={15} aria-hidden="true" /> 3D STUDIO</span>
-          {ready && <LiveCake recipe={recipe} angle={angle} dragging={dragging} onAvailabilityChange={setViewAvailable} />}
+          {ready && <LiveCake recipe={recipe} angle={angle} dragging={dragging} capture={capture} onAvailabilityChange={setViewAvailable} />}
         </div>
         <div className="cake-builder-view-controls">
-          <span>{viewAvailable ? "Drag the cake to turn it" : "Sample cake photo"}</span>
+          <span>{viewAvailable === false ? "Sample cake photo" : "Drag the cake to turn it"}</span>
         </div>
         <p className="cake-builder-recipe" aria-live="polite">
-          <strong>{formation === "triangle" ? "6-slice Triangle wheel" : `${pieces}-layer Stack`}</strong>
+          <strong>{cakeFormationLabel(recipe)}</strong>
           <span>{added.length ? added.map(index => flavors[index].name).join(" · ") : "Your selected flavors will appear here."}</span>
         </p>
       </div>
       <div className="cake-builder-controls">
+        <div className="builder-rotation" role="group" aria-label="Rotate the cake">
+          <button type="button" aria-label="Rotate cake left" disabled={!viewAvailable} onClick={() => setAngle(value => value - .55)}><RotateCcw size={17} aria-hidden="true" /></button>
+          <button type="button" aria-label="Rotate cake right" disabled={!viewAvailable} onClick={() => setAngle(value => value + .55)}><RotateCw size={17} aria-hidden="true" /></button>
+        </div>
         <ol className="builder-steps" aria-label="Cake builder steps">
           {steps.map((label, index) => <li key={label}>
             <button type="button" aria-current={index === step ? "step" : undefined} disabled={index > step}
@@ -166,7 +201,7 @@ export function CakeBuilder() {
                 onDragLeave={() => setDropTarget(null)}
                 onDrop={event => {
                   const raw = event.dataTransfer.getData(flavorMime);
-                  if (!/^[0-5]$/.test(raw)) return;
+                  if (!/^\d+$/.test(raw) || !flavors[Number(raw)]) return;
                   event.preventDefault();
                   addFlavor(index, Number(raw));
                 }}>
@@ -174,15 +209,24 @@ export function CakeBuilder() {
               </button>)}
             </div>
             <p className="builder-guidance" aria-live="polite">{picked !== null ? `Select a slot for ${flavors[picked].name}.` :
-              added.length === count ? "Your cake is ready to spin. Swap flavors anytime." : `${added.length} of ${count} flavors added`}</p>
+              cakeComplete ? "Your cake is ready. You can still swap flavors." : `${added.length} of ${count} flavors added`}</p>
           </>}
         </div>
         <div className="builder-step-actions">
           {step > 0 && <button type="button" onClick={() => changeStep(step - 1)}>Back</button>}
           {step < 2 ? <button type="button" className="builder-next" onClick={() => changeStep(step + 1)}>Continue</button>
-            : <button type="button" className="builder-next" onClick={resetCake}>Start over</button>}
-          {step === 2 && added.length === count && <span className="builder-done"><Check size={15} aria-hidden="true" /> Cake ready</span>}
+            : <button type="button" onClick={resetCake}>Start over</button>}
+          {step === 2 && cakeComplete && <span className="builder-done"><Check size={15} aria-hidden="true" /> Cake ready</span>}
         </div>
+        {step === 2 && <div className="builder-receipt">
+          <div className="builder-receipt-actions">
+            {shareFile && canShare && <button type="button" onClick={() => void shareReceipt(shareFile)}><Share size={16} aria-hidden="true" /> Share PNG</button>}
+            <button className="builder-next" type="button" disabled={!cakeComplete || saving || viewAvailable === null} onClick={() => void saveReceipt()}>
+              <Download size={16} aria-hidden="true" /> {saving ? "Saving…" : "Save receipt"}
+            </button>
+          </div>
+          <p role="status">{currentReceipt?.message ?? "Download a PNG of your cake and its flavor list."}</p>
+        </div>}
       </div>
     </div>
   </section>;

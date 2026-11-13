@@ -134,24 +134,7 @@
 .type-alphabet { font-size:12px; }
 .identity-guide .typography-caption { color:var(--bakery-ink); font-size:11px; }
 
-/* A light, automatically changing pink stage replaces the dark artwork backdrop. */
 .launch-showcase { background:#fff; padding:45px 0; scroll-margin-top:70px; }
-.showcase-stage { min-height:690px; padding:100px max(36px,calc((100% - 1120px)/2)); gap:60px; color:var(--bakery-ink); background:#ffd7e4; transition:background-color 1s; grid-template-columns:.85fr 1.3fr; }
-.showcase-stage.showcase-theme-1 { background:#fce4eb; }
-.showcase-stage.showcase-theme-2 { background:#f4cad9; }
-.showcase-stage.showcase-theme-3 { background:#ffeaf0; }
-.showcase-backgrounds,.showcase-shade { display:none; }
-.showcase-content>.eyebrow { color:var(--bakery-pink); margin-bottom:20px; }
-.showcase-content h3 { font-size:clamp(34px,3.7vw,50px); text-transform:none; color:var(--bakery-pink); }
-.showcase-content>p { font-size:13px; line-height:1.9; max-width:400px; }
-.showcase-card-area>.eyebrow { color:var(--bakery-pink); }
-.showcase-track { --card-width:215px; gap:40px; padding-block:55px; }
-.showcase-card { border:6px solid #fff; border-radius:18px; background:#fff; color:var(--bakery-ink); transform:rotate(4deg); }
-.showcase-card.is-active { border-color:#fff; transform:translateY(-8px) rotate(-3deg) scale(1.18); }
-.showcase-card>img { border-radius:10px; }
-.showcase-card>span { padding:14px 10px; min-height:93px; }
-.showcase-card small { color:var(--bakery-pink); }
-.showcase-card strong { font-family:var(--font-body),sans-serif; font-weight:900; color:var(--bakery-pink); font-size:20px; }
 
 /* Poster design notes read as a clean bakery journal. */
 .campaign-journal { padding:75px 36px 95px; background:#fff; }
@@ -175,7 +158,6 @@ footer { background:#fff; padding:25px 36px; border:0; color:#9f365b; }
   .business-subheading { column-gap:35px; }
   .formation-card-art,.catalog-layered .formation-card-art,.catalog-box .formation-card-art { height:285px; padding:12px; }
   .formation-card-art img { height:260px; }
-  .showcase-stage { gap:30px; }
   .identity-guide-row { grid-template-columns:1fr; gap:25px; }
   .identity-row-label { max-width:500px; }
 }
@@ -254,14 +236,6 @@ footer { background:#fff; padding:25px 36px; border:0; color:#9f365b; }
   .type-sample { font-size:27px; }
   .type-specimen-display .type-sample { font-size:34px; }
   .launch-showcase { padding:20px 0; }
-  .showcase-stage { min-height:840px; grid-template-columns:1fr; gap:25px; padding:85px 22px 100px; }
-  .showcase-content h3 { font-size:35px; }
-  .showcase-content>p { font-size:12px; margin-top:18px; max-width:none; }
-  .showcase-content>.eyebrow { margin-bottom:15px; font-size:8px; }
-  .showcase-track { --card-width:180px; gap:40px; padding-block:45px; }
-  .showcase-card.is-active { transform:translateY(-6px) rotate(-3deg) scale(1.16); }
-  .showcase-card>span { min-height:85px; padding:12px 9px; }
-  .showcase-card strong { font-size:18px; }
   .campaign-journal { padding:45px 22px 65px; }
   .closing { padding:85px 22px 90px; }
   .closing h2 { font-size:35px; }
@@ -270,7 +244,7 @@ footer { background:#fff; padding:25px 36px; border:0; color:#9f365b; }
   .footer-links { justify-content:center; flex-wrap:wrap; gap:15px; font-size:10px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .story-photo-card,.showcase-stage { transition:none; }
+  .story-photo-card { transition:none; }
 }
 
 /* Details open on hover or selection. Cards start with their titles only. */

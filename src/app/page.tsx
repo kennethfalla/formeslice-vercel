@@ -83,7 +83,7 @@ export default function Home() {
       </section>
 
       <Identity open={setArtwork} />
-      <LaunchPost />
+      <LaunchPost open={setArtwork} />
       <Campaign open={setArtwork} />
       <section className="closing pink-sky" aria-labelledby="closing-title"><SyrupEdge className="section-syrup section-syrup-top" /><SyrupEdge className="section-syrup section-syrup-bottom closing-syrup" /><Logo symbol className="closing-symbol" /><h2 id="closing-title">Find your flavor.<br />Make your formation.</h2><p>From the first idea to the final cherry on top.</p><Pill href="#home">Back to the first slice</Pill><div className="credits"><span className="eyebrow">THE PEOPLE BEHIND FORMÉSLICE</span><p>Lhaiza Mari Kim Ambos · Nestor Canlas<br />Kenneth Falla · Joshua Madulid</p><small>BSIT–4F · Creative Task #4 · Brand Presentation</small></div></section>
     </main>

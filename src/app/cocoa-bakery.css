@@ -71,13 +71,6 @@ body { color:var(--cocoa); background:var(--paper); }
 .identity-guide .type-specimen-display { background:var(--cocoa); color:var(--paper); }
 .identity-name-band,.identity-guide .typography-showcase { border-color:#a97f6650; }
 .mark-expand { background:var(--vanilla); color:var(--cocoa); }
-.showcase-stage,.showcase-stage.showcase-theme-0 { background:#54332b; }
-.showcase-stage.showcase-theme-1 { background:#674037; }
-.showcase-stage.showcase-theme-2 { background:#623641; }
-.showcase-stage.showcase-theme-3 { background:#453027; }
-.showcase-stage,.showcase-stage .showcase-content h3 { color:var(--paper); }
-.showcase-content>.eyebrow,.showcase-card-area>.eyebrow { color:#f6c5d0; }
-.showcase-card,.showcase-card.is-active { background:var(--paper); border-color:var(--paper); }
 .closing { background:var(--cocoa); color:var(--paper); }
 .closing h2 { color:var(--paper); }
 .closing .brand-image { background:var(--paper); rotate:calc(var(--film-phase,0) * 6deg); }
@@ -142,7 +135,7 @@ footer { background:var(--ganache); color:var(--paper); }
   }
   .site-shell :is(.about-benefit-card,.audience-grid article,.identity-mark-card,.identity-color,.type-specimen,.reference-card,.campaign-color-circles>div):hover { translate:0 -4px; }
   .site-shell :is(.about-benefit-card,.audience-grid article,.identity-mark-card,.type-specimen,.reference-card):hover { border-color:#b9897480; box-shadow:0 8px 17px #542f281a; }
-  .about-story-thumbs button:hover,.campaign-editorial-figure button:hover { opacity:.88; }
+  .campaign-editorial-figure button:hover { opacity:.88; }
   .catalog-picker button:hover>span { box-shadow:0 5px 12px #542f281a; }
   .footer-links a:hover,.mobile-menu a:hover { text-decoration:underline; text-underline-offset:4px; }
 }

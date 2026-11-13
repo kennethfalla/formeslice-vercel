@@ -8,6 +8,7 @@ import "./cocoa-bakery.css";
 import "./brand-intro.css";
 import "./hero.css";
 import "./about-editorial.css";
+import "./launch-post.css";
 import "./cake-builder.css";
 import "./portfolio-motion.css";
 import { BrandIntro } from "./brand-intro";

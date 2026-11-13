@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import Image from "next/image";
 import {
   ACESFilmicToneMapping, CanvasTexture, CylinderGeometry, DirectionalLight, ExtrudeGeometry, Group,
   HemisphereLight, IcosahedronGeometry, LatheGeometry, Mesh, MeshStandardMaterial, PerspectiveCamera, PlaneGeometry, RepeatWrapping, Scene,
-  PCFShadowMap, ShadowMaterial, Shape, SphereGeometry, TorusGeometry, Vector2, WebGLRenderer, type Material,
+  PCFShadowMap, ShadowMaterial, Shape, SphereGeometry, SRGBColorSpace, TorusGeometry, Vector2, WebGLRenderer, type Material, type Texture,
 } from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { flavors, type Flavor, type CakeRecipe } from "./cake-recipe";
@@ -18,34 +18,6 @@ function disposeMeshes(group: Group | Scene) {
     for (const material of [object.material].flat()) materials.add(material);
   });
   for (const material of materials) material.dispose();
-}
-
-function spongeTexture() {
-  const canvas = document.createElement("canvas");
-  canvas.width = canvas.height = 256;
-  const ctx = canvas.getContext("2d");
-  if (ctx) {
-    ctx.fillStyle = "#f4efe8";
-    ctx.fillRect(0, 0, 256, 256);
-    let seed = 17;
-    const noise = () => {
-      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-      return seed / 4294967296;
-    };
-    for (let index = 0; index < 4600; index++) {
-      const x = noise() * 256;
-      const y = noise() * 256;
-      const size = .22 + noise() ** 3 * 2.05;
-      ctx.fillStyle = index % 5 === 0 ? "rgba(255,255,255,.75)" : `rgba(69,41,24,${.08 + noise() * .38})`;
-      ctx.beginPath();
-      ctx.ellipse(x, y, size * 1.2, size, noise() * Math.PI, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-  const texture = new CanvasTexture(canvas);
-  texture.anisotropy = 4;
-  texture.wrapS = texture.wrapT = RepeatWrapping;
-  return texture;
 }
 
 function dollop(color: string, size = 1) {
@@ -130,9 +102,9 @@ function garnish(flavor: Flavor) {
   return cluster;
 }
 
-function buildCake(recipe: CakeRecipe, texture: CanvasTexture) {
+function buildCake(recipe: CakeRecipe, texture: Texture) {
   const cake = new Group();
-  const plainCream = new MeshStandardMaterial({ color: "#f3e1c7", roughness: .62 });
+  const plainCream = new MeshStandardMaterial({ color: "#f5e7d3", roughness: .62 });
   const radius = 1.42;
   const triangle = recipe.formation === "triangle";
 
@@ -143,13 +115,35 @@ function buildCake(recipe: CakeRecipe, texture: CanvasTexture) {
       shape.moveTo(0, 0);
       shape.absarc(0, 0, radius, sector.start, sector.end, false);
       shape.lineTo(0, 0);
-      const geometry = new ExtrudeGeometry(shape, { depth: height, curveSegments: 24, bevelEnabled: true, bevelSegments: 3, bevelSize: .019, bevelThickness: .011 });
+      const geometry = new ExtrudeGeometry(shape, { depth: height, curveSegments: 24, bevelEnabled: true, bevelSegments: 3, bevelSize: .014, bevelThickness: .009 });
+      const uv = geometry.attributes.uv;
+      for (let index = 0; index < uv.count; index++) uv.setXY(index, uv.getX(index) * 1.7, uv.getY(index) * 3.8);
       geometry.rotateX(-Math.PI / 2);
       mesh = new Mesh(geometry, material);
-      mesh.position.set(Math.cos(sector.center) * .067, y, -Math.sin(sector.center) * .067);
+      mesh.position.set(Math.cos(sector.center) * .091, y, -Math.sin(sector.center) * .091);
     } else {
-      mesh = new Mesh(new CylinderGeometry(radius, radius, height, 84), material);
-      mesh.position.y = y + height / 2;
+      const edge = Math.min(.036, height * .32);
+      const profile = [
+        [0, 0], [radius - edge, 0], [radius - edge * .3, edge * .4],
+        [radius, edge], [radius + .007, height * .54],
+        [radius - edge * .15, height - edge], [radius - edge * .45, height - edge * .28],
+        [radius - edge, height], [0, height],
+      ];
+      const geometry = new LatheGeometry(profile.map(([r, h]) => new Vector2(r, h)), 112);
+      const points = geometry.attributes.position;
+      const uv = geometry.attributes.uv;
+      for (let index = 0; index < points.count; index++) {
+        const x = points.getX(index);
+        const z = points.getZ(index);
+        const h = points.getY(index);
+        const angle = Math.atan2(z, x);
+        const ripple = 1 + .006 * Math.sin(angle * 17 + y * 6) + .005 * Math.cos(angle * 9 - h * 9);
+        points.setXYZ(index, x * ripple, h, z * ripple);
+        uv.setXY(index, uv.getX(index) * 14, h * 4.2 + y);
+      }
+      geometry.computeVertexNormals();
+      mesh = new Mesh(geometry, material);
+      mesh.position.y = y;
     }
     mesh.castShadow = mesh.receiveShadow = true;
     cake.add(mesh);
@@ -166,47 +160,73 @@ function buildCake(recipe: CakeRecipe, texture: CanvasTexture) {
   const width = Math.PI * 2 / recipe.flavors.length;
   recipe.flavors.forEach((selection, index) => {
     const flavor = flavors[selection ?? 4];
-    const batter = new MeshStandardMaterial({ color: flavor.sponge, map: texture, bumpMap: texture, bumpScale: .026, roughness: .94 });
-    const filling = new MeshStandardMaterial({ color: flavor.filling, roughness: .68 });
+    const batter = new MeshStandardMaterial({ color: flavor.sponge, map: texture, bumpMap: texture, bumpScale: .009, roughness: .97 });
+    const filling = new MeshStandardMaterial({ color: flavor.filling, roughness: .42 });
     const angle = (index + .5) * width;
     if (triangle) {
-      const sector = { start: index * width + .029, end: (index + 1) * width - .029, center: angle };
-      addBand(batter, .19, .198, radius, sector);
-      addBand(filling, .388, .049, radius - .018, sector);
-      addBand(batter, .437, .164, radius + .004, sector);
-      addBand(plainCream, .601, .061, radius - .012, sector);
-      addBand(batter, .662, .147, radius, sector);
-      addBand(new MeshStandardMaterial({ color: flavor.icing, roughness: .43 }), .809, .07, radius + .007, sector);
-      if (selection !== null) placeGarnish(flavor, .886, angle, 1.06, 1.18);
+      const sector = { start: index * width + .023, end: (index + 1) * width - .023, center: angle };
+      addBand(batter, .12, .213, radius, sector);
+      addBand(filling, .333, .045, radius - .015, sector);
+      addBand(batter, .378, .198, radius + .004, sector);
+      addBand(plainCream, .576, .04, radius - .011, sector);
+      addBand(batter, .616, .147, radius, sector);
+      addBand(new MeshStandardMaterial({ color: flavor.icing, roughness: .47 }), .763, .061, radius + .006, sector);
+      if (selection !== null) {
+        placeGarnish(flavor, .833, angle, 1.02, 1.38);
+        placeGarnish(flavor, .833, angle + .09, .74, .65);
+      }
     } else {
-      const base = .19 + index * .355;
+      const base = .12 + index * .4;
       const layerRadius = radius - index * .027;
-      addBand(batter, base, .135, layerRadius);
-      addBand(filling, base + .135, .036, layerRadius - .008);
-      addBand(batter, base + .171, .128, layerRadius);
-      addBand(plainCream, base + .299, .056, layerRadius + .01);
+      addBand(batter, base, .326, layerRadius);
+      if (index < recipe.flavors.length - 1) {
+        addBand(plainCream, base + .326, .054, layerRadius + .014);
+        addBand(filling, base + .373, .027, layerRadius - .004);
+        for (let dripIndex = 0; dripIndex < 5; dripIndex++) {
+          const turn = index * 1.8 + dripIndex * 1.29;
+          const drip = new Mesh(new SphereGeometry(1, 12, 8), filling);
+          drip.position.set(Math.cos(turn) * layerRadius, base + .355, Math.sin(turn) * layerRadius);
+          drip.scale.set(.092, .053 + .014 * (dripIndex % 3), .03);
+          drip.rotation.y = Math.PI / 2 - turn;
+          drip.castShadow = true;
+          cake.add(drip);
+        }
+      }
     }
   });
 
   if (!triangle) {
-    const top = .19 + recipe.flavors.length * .355;
+    const top = .12 + (recipe.flavors.length - 1) * .4 + .326;
     const topFlavor = recipe.flavors.at(-1);
-    addBand(new MeshStandardMaterial({ color: flavors[topFlavor ?? 4].icing, roughness: .44 }), top, .055, radius - (recipe.flavors.length - 1) * .027);
-    const present = [...new Set(recipe.flavors.filter(index => index !== null))];
-    present.forEach((selection, index) => placeGarnish(flavors[selection], top + .058, index * 2.39996 + .3, .75, 1.38));
-    for (let i = 0; i < 16; i++) {
-      const angle = i * Math.PI / 8;
-      const bead = dollop("#fff1d8", .63);
-      bead.position.set(Math.cos(angle) * 1.20, top + .055, Math.sin(angle) * 1.20);
-      cake.add(bead);
+    const frostingRadius = radius - (recipe.flavors.length - 1) * .027;
+    const frosting = new MeshStandardMaterial({ color: flavors[topFlavor ?? 4].icing, roughness: .48 });
+    addBand(frosting, top, .08, frostingRadius + .015);
+    for (let ring = 1; ring <= 5; ring++) {
+      const swirl = new Mesh(new TorusGeometry(frostingRadius * ring / 5.5, .021, 8, 80), frosting);
+      swirl.rotation.x = -Math.PI / 2;
+      swirl.position.set(.012 * ring, top + .071, -.008 * ring);
+      swirl.receiveShadow = true;
+      cake.add(swirl);
     }
+    const present = [...new Set(recipe.flavors.filter(index => index !== null))];
+    present.forEach((selection, index) => {
+      const angle = index * 2.06 + .45;
+      placeGarnish(flavors[selection], top + .081, angle, .86, 1.65);
+      placeGarnish(flavors[selection], top + .081, angle + .38, .67, .92);
+    });
   }
   return cake;
 }
 
-export function CakeScene({ recipe, angle, dragging, onAvailabilityChange }: { recipe: CakeRecipe; angle: number; dragging: boolean; onAvailabilityChange: (available: boolean) => void }) {
+export function CakeScene({ recipe, angle, dragging, capture, onAvailabilityChange }: {
+  recipe: CakeRecipe;
+  angle: number;
+  dragging: boolean;
+  capture: RefObject<(() => HTMLCanvasElement | null) | null>;
+  onAvailabilityChange: (available: boolean) => void;
+}) {
   const mount = useRef<HTMLDivElement>(null);
-  const display = useRef<{ turntable: Group; texture: CanvasTexture; render: () => void; rotation: { manual: number; dragging: boolean } } | null>(null);
+  const display = useRef<{ turntable: Group; texture: Texture; render: () => void; rotation: { manual: number; dragging: boolean } } | null>(null);
   const [fallback, setFallback] = useState(false);
 
   useEffect(() => {
@@ -224,41 +244,50 @@ export function CakeScene({ recipe, angle, dragging, onAvailabilityChange }: { r
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = PCFShadowMap;
     renderer.toneMapping = ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
     host.append(renderer.domElement);
 
     const scene = new Scene();
-    const camera = new PerspectiveCamera(39, 1, .1, 35);
-    camera.position.set(3.5, 3.4, 4.85);
-    camera.lookAt(0, .58, 0);
-    scene.add(new HemisphereLight("#fff1e7", "#ca9bac", 2.4));
-    const key = new DirectionalLight("#fff3e7", 3.3);
+    const camera = new PerspectiveCamera(34, 1, .1, 35);
+    camera.position.set(3.1, 3.5, 5.05);
+    camera.lookAt(0, .72, 0);
+    scene.add(new HemisphereLight("#fff5ec", "#b59a87", 1.56));
+    const key = new DirectionalLight("#fff5eb", 2.55);
     key.position.set(-3, 7, 4);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
+    key.shadow.camera.left = key.shadow.camera.bottom = -2.5;
+    key.shadow.camera.right = key.shadow.camera.top = 2.5;
     key.shadow.bias = -.0004;
     key.shadow.normalBias = .022;
     key.shadow.radius = 2.8;
     scene.add(key);
-    const fill = new DirectionalLight("#f7c2d4", .8);
+    const fill = new DirectionalLight("#fff4ec", 1.25);
     fill.position.set(4, 4, -5);
     scene.add(fill);
 
-    const ground = new Mesh(new PlaneGeometry(30, 30), new ShadowMaterial({ opacity: .23 }));
+    const ground = new Mesh(new PlaneGeometry(30, 30), new ShadowMaterial({ opacity: .15 }));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
-    const plate = new Mesh(new CylinderGeometry(1.79, 1.69, .16, 80), new MeshStandardMaterial({ color: "#fff1e6", roughness: .27 }));
-    plate.position.y = .09;
+    const plate = new Mesh(new CylinderGeometry(1.66, 1.58, .1, 96), new MeshStandardMaterial({ color: "#faf2e9", roughness: .46 }));
+    plate.position.y = .055;
     plate.castShadow = plate.receiveShadow = true;
     scene.add(plate);
-    const trim = new Mesh(new TorusGeometry(1.738, .025, 10, 84), new MeshStandardMaterial({ color: "#d58d92", roughness: .34, metalness: .28 }));
-    trim.rotation.x = -Math.PI / 2;
-    trim.position.y = .164;
-    scene.add(trim);
-
     const turntable = new Group();
     scene.add(turntable);
-    const texture = spongeTexture();
+    const baseTexture = document.createElement("canvas");
+    baseTexture.width = 512;
+    baseTexture.height = 208;
+    const baseContext = baseTexture.getContext("2d");
+    if (baseContext) {
+      baseContext.fillStyle = "#dfdfdf";
+      baseContext.fillRect(0, 0, baseTexture.width, baseTexture.height);
+    }
+    const texture = new CanvasTexture(baseTexture);
+    texture.colorSpace = SRGBColorSpace;
+    texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    texture.wrapS = texture.wrapT = RepeatWrapping;
     const render = () => renderer.render(scene, camera);
     const rotation = { manual: 0, dragging: false };
     display.current = { turntable, texture, render, rotation };
@@ -267,6 +296,45 @@ export function CakeScene({ recipe, angle, dragging, onAvailabilityChange }: { r
     let visible = false;
     let contextLost = false;
     let lastFrame = 0;
+    const crumb = new window.Image();
+    crumb.onload = () => {
+      baseContext?.drawImage(crumb, 0, 0, baseTexture.width, baseTexture.height);
+      texture.needsUpdate = true;
+      if (!contextLost) {
+        render();
+        onAvailabilityChange(true);
+      }
+    };
+    crumb.onerror = () => { if (!contextLost) onAvailabilityChange(true); };
+    crumb.src = "/images/details/products/sponge-crumb.webp";
+
+    capture.current = () => {
+      if (contextLost) return null;
+      const snapshot = document.createElement("canvas");
+      snapshot.width = 1050;
+      snapshot.height = 540;
+      const ctx = snapshot.getContext("2d");
+      if (!ctx) return null;
+      const originalSize = renderer.getSize(new Vector2());
+      const originalAspect = camera.aspect;
+      const originalZoom = camera.zoom;
+      try {
+        renderer.setSize(snapshot.width, snapshot.height, false);
+        camera.aspect = snapshot.width / snapshot.height;
+        camera.zoom = 1.12;
+        camera.updateProjectionMatrix();
+        render();
+        // Read immediately while the current WebGL frame is still available.
+        ctx.drawImage(renderer.domElement, 0, 0, snapshot.width, snapshot.height);
+        return snapshot;
+      } finally {
+        renderer.setSize(originalSize.x, originalSize.y, false);
+        camera.aspect = originalAspect;
+        camera.zoom = originalZoom;
+        camera.updateProjectionMatrix();
+        render();
+      }
+    };
     const spin = (time: number) => {
       if (!lastFrame) lastFrame = time;
       const elapsed = time - lastFrame;
@@ -293,6 +361,7 @@ export function CakeScene({ recipe, angle, dragging, onAvailabilityChange }: { r
       if (!clientWidth || !clientHeight) return;
       renderer.setSize(clientWidth, clientHeight, false);
       camera.aspect = clientWidth / clientHeight;
+      camera.zoom = Math.min(1.06, camera.aspect * 1.12);
       camera.updateProjectionMatrix();
       render();
     });
@@ -302,6 +371,8 @@ export function CakeScene({ recipe, angle, dragging, onAvailabilityChange }: { r
 
     return () => {
       display.current = null;
+      capture.current = null;
+      crumb.onload = crumb.onerror = null;
       resize.disconnect();
       renderer.setAnimationLoop(null);
       visibility.disconnect();
@@ -314,7 +385,7 @@ export function CakeScene({ recipe, angle, dragging, onAvailabilityChange }: { r
       key.shadow.dispose();
       renderer.dispose();
     };
-  }, [onAvailabilityChange]);
+  }, [capture, onAvailabilityChange]);
 
   useEffect(() => {
     const state = display.current;

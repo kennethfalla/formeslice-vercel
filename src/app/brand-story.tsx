@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
-import { useVisibleAutoplay } from "./use-visible-autoplay";
+import { useState } from "react";
 
 const chapters = [
   { image: "AboutUs1.webp", width: 600, height: 600, position: "center 64%", title: "A sweeter beginning.", short: "The beginning", alt: "A baker in a pink apron decorating a cake", copy: "ForméSlice began with a simple gap: cake buyers often have to choose from fixed flavors and designs. We imagined a more personal experience—one where your preferences help shape the cake." },
@@ -14,8 +13,6 @@ const chapters = [
 export function BrandStory() {
   const [active, setActive] = useState(0);
   const chapter = chapters[active];
-  const gallery = useRef<HTMLDivElement>(null);
-  useVisibleAutoplay(gallery, () => setActive(index => (index + 1) % chapters.length), 6500);
   return <section className="story-chapters" id="story" aria-labelledby="story-title">
     <div className="about-banner">
       <div className="about-banner-copy">
@@ -24,20 +21,20 @@ export function BrandStory() {
         <p>Good cake brings people together. We believe choosing it should leave room for a little more <strong>you.</strong></p>
       </div>
     </div>
-    <div className="about-story-spread" ref={gallery}>
+    <div className="about-story-spread">
       <figure className="about-story-photo">
         <Image key={chapter.image} src={`/images/details/story/${chapter.image}`} width={chapter.width} height={chapter.height} alt={chapter.alt} style={{ objectPosition: chapter.position }} sizes="(max-width: 767px) 91vw, 550px" />
       </figure>
       <div className="about-story-panel">
-        <span className="eyebrow">Our story · 0{active + 1} / 04</span>
-        <div className="about-chapter-copy" id="story-selected-copy">
+        <span className="eyebrow">Our story</span>
+        <div className="about-chapter-copy" id="story-selected-copy" aria-live="polite">
           <h3>{chapter.title}</h3>
           <p>{chapter.copy}</p>
         </div>
         <div className="about-story-controls">
-          <div className="about-story-thumbs" role="group" aria-label="Story chapters">
-            {chapters.map((item, index) => <button key={item.image} type="button" onClick={() => setActive(index)} aria-pressed={index === active} aria-controls="story-selected-copy" aria-label={`${item.short}: ${item.title}`}>
-              <Image src={`/images/details/story/${item.image}`} width={item.width} height={item.height} alt="" sizes="46px" />
+          <div className="about-story-buttons" role="group" aria-label="Story chapters">
+            {chapters.map((item, index) => <button key={item.image} type="button" onClick={() => setActive(index)} aria-pressed={index === active} aria-controls="story-selected-copy">
+              {item.short}
             </button>)}
           </div>
         </div>

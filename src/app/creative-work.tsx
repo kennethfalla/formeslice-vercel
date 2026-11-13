@@ -1,57 +1,50 @@
 "use client";
 
 import Image from "next/image";
-import { useVisibleAutoplay } from "./use-visible-autoplay";
-import { useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
 import { SyrupEdge } from "./syrup-edge";
 
-const posts = [
-  { src: "Firsteverbrandpost.png", title: "The first introduction", label: "FIRST OFFICIAL BRAND POST", archive: 3, width: 1080, height: 1080, alt: "The first ForméSlice brand post showing a wheel of assorted cake slices with the brand tagline", detail: "A cake wheel anchors the composition, while small Triangle and Stack examples introduce the two signature formations. The pink background, repeated wordmark, and curved tagline bring the identity into one introduction." },
-  { src: "febpics/feb1.jpg", title: "A flavor-filled invitation", label: "SUPPORTING BRAND ARTWORK", archive: 5, width: 2048, height: 2048, alt: "ForméSlice artwork combining individual cake slices, stacked cake layers, the brand tagline, and a 25 percent promotional offer", detail: "Close-up layers and individual slices place flavor variety in the foreground. Large white lettering gives the tagline a strong reading order, with a promotional offer and contact details contained in the supplied artwork." },
-  { src: "febpics/feb2.png", title: "Chocolate meets berries", label: "SUPPORTING BRAND ARTWORK", archive: 6, width: 1080, height: 1080, alt: "Chocolate Berries artwork featuring berry-topped cake slices, pink typography, and a 50 percent offer", detail: "Chocolate brown, berry pink, and bright fruit surround the featured cake slices. Oversized “Berries” lettering and a pink offer panel give this product-led post a clear focal point." },
-  { src: "febpics/feb3.jpg", title: "One brand, many possibilities", label: "SUPPORTING BRAND ARTWORK", archive: 7, width: 1080, height: 1080, alt: "Cream ForméSlice brand artwork with several cake slices, a layered cake, the logo, and the brand tagline", detail: "A cream background gives the logo and cake assortment room to stand out. Triangle slices and a layered cake echo the customization concept, while the repeated tagline keeps the brand message consistent." },
+const supportingPosts = [
+  { src: "febpics/feb1.jpg", title: "A flavor-filled invitation", archive: 5, size: 2048, alt: "Cake slices and stacked layers with the ForméSlice tagline and a 25 percent offer" },
+  { src: "febpics/feb2.png", title: "Chocolate meets berries", archive: 6, size: 1080, alt: "Chocolate Berries artwork with berry-topped cake slices and a 50 percent offer" },
+  { src: "febpics/feb3.jpg", title: "One brand, many possibilities", archive: 7, size: 1080, alt: "Cream ForméSlice artwork with cake slices, a layered cake, and the brand tagline" },
 ];
 
-export function LaunchPost() {
-  const [active, setActive] = useState(0);
-  const stage = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
-  const post = posts[active];
-  const move = (direction: number) => setActive(index => (index + direction + posts.length) % posts.length);
-
-  useVisibleAutoplay(stage, () => setActive(index => (index + 1) % posts.length));
-  useEffect(() => {
-    const rail = track.current;
-    const card = rail?.children[active] as HTMLElement | undefined;
-    if (!rail || !card) return;
-    const centerCard = (behavior: ScrollBehavior) => rail.scrollTo({
-      left: card.offsetLeft + card.offsetWidth / 2 - rail.clientWidth / 2,
-      behavior,
-    });
-    centerCard(reducedMotion ? "instant" : "smooth");
-    // Keep the selected artwork centered when the device changes orientation.
-    let width = rail.clientWidth;
-    const resize = new ResizeObserver(() => {
-      if (rail.clientWidth === width) return;
-      width = rail.clientWidth;
-      centerCard("instant");
-    });
-    resize.observe(rail);
-    return () => resize.disconnect();
-  }, [active, reducedMotion]);
-
+export function LaunchPost({ open }: { open: (index: number) => void }) {
   return <section className="launch-showcase" id="creative" aria-labelledby="launch-title">
-    <h2 className="sr-only" id="launch-title">First ever brand post · Hello, sweet world.</h2>
-    <div className={`showcase-stage showcase-theme-${active}`} ref={stage} role="region" aria-roledescription="carousel" aria-label="First brand post and supporting artwork" tabIndex={0} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); move(1); } if (event.key === "ArrowLeft") { event.preventDefault(); move(-1); } }}>
+    <div className="showcase-stage">
       <SyrupEdge className="section-syrup section-syrup-top showcase-syrup" />
       <SyrupEdge className="section-syrup section-syrup-bottom" />
-      <div className="showcase-backgrounds" aria-hidden="true">{posts.map((item, index) => <Image key={item.src} className={index === active ? "is-active" : ""} src={`/images/details/${item.src}`} width={item.width} height={item.height} alt="" sizes="100vw" />)}</div><div className="showcase-shade" />
-      <div className="showcase-content"><span className="eyebrow">CT #2 · FORMÉSLICE / {post.label}</span><h3>{post.title}</h3><p>{post.detail}</p></div>
-      <div className="showcase-card-area"><span className="eyebrow">EXPLORE THE BRAND POSTS</span><div className="showcase-track" ref={track}>{posts.map((item, index) => <button className={`showcase-card ${index === active ? "is-active" : ""}`} key={item.src} onClick={() => setActive(index)} aria-label={`Show ${item.title}`} aria-current={index === active ? "true" : undefined}><Image src={`/images/details/${item.src}`} width={item.width} height={item.height} alt={item.alt} sizes="(max-width: 767px) 160px, 210px" /><span><small>0{index + 1} / {index === 0 ? "THE FIRST POST" : "BRAND ARTWORK"}</small><strong>{item.title}</strong></span></button>)}</div></div>
+      <div className="launch-inner">
+        <h2 id="launch-title">First ever brand post</h2>
+        <article className="launch-feature">
+          <button className="launch-art" type="button" onClick={() => open(3)} aria-label="Enlarge the first official brand post">
+            <Image src="/images/details/Firsteverbrandpost.png" width={1080} height={1080}
+              alt="The first ForméSlice brand post showing a wheel of assorted cakes with the brand tagline"
+              sizes="(max-width: 700px) 92vw, (max-width: 1140px) 49vw, 545px" />
+          </button>
+          <div className="launch-caption">
+            <span className="eyebrow">Official brand post</span>
+            <h3>Introducing FORMÉSLICE.</h3>
+            <p>A different way to experience cake.</p>
+            <p>Choose your flavors. Build your layers. Add the details you love. Then bring everything together in a form of your own.</p>
+            <p>Designed around the idea of Create Your Own Slice, FORMÉSLICE turns every cake into a personal composition — made to your taste, shaped by your choices.</p>
+            <p>Your flavor. Your formation.</p>
+            <p>This is FORMÉSLICE.</p>
+          </div>
+        </article>
+        <section className="launch-support" aria-labelledby="launch-support-title">
+          <h3 id="launch-support-title">Supporting posts</h3>
+          <ul>
+            {supportingPosts.map(item => <li key={item.src}>
+              <button className="launch-art" type="button" onClick={() => open(item.archive)} aria-label={`Enlarge ${item.title}`}>
+                <Image src={`/images/details/${item.src}`} width={item.size} height={item.size} alt={item.alt}
+                  sizes="(max-width: 700px) 29vw, (max-width: 1140px) 30vw, 355px" />
+              </button>
+            </li>)}
+          </ul>
+        </section>
+      </div>
     </div>
-
   </section>;
 }
 

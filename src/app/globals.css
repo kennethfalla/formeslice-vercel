@@ -266,26 +266,6 @@ img { display:block; max-width:100%; height:auto; }
 .identity-guide .type-specimen-body { color:var(--brown); }
 .identity-guide .typography-caption { color:var(--cream); }
 .launch-showcase { padding:0; background:var(--brown); scroll-margin-top:-24px; }
-.showcase-stage { position:relative; isolation:isolate; width:100%; margin:0; padding:70px clamp(28px,5vw,96px); min-height:calc(100svh - var(--nav-height)); overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr); align-items:center; gap:50px; color:var(--cream); background:var(--brown); }
-.showcase-stage:focus-visible { outline:3px solid var(--pink-deep); outline-offset:6px; }
-.showcase-backgrounds,.showcase-shade { position:absolute; inset:0; z-index:-1; pointer-events:none; }
-.showcase-backgrounds>img { position:absolute; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; transition:opacity 1s ease; filter:saturate(.8); }
-.showcase-backgrounds>img.is-active { opacity:1; }
-.showcase-shade { background:linear-gradient(90deg,#291a17f5 0%,#291a17c9 32%,#291a1738 76%),linear-gradient(0deg,#291a17b0,transparent 60%); }
-.showcase-content { min-width:0; }
-.showcase-content>.eyebrow { font-size:9px; line-height:1.8; margin-bottom:25px; }
-.showcase-content h3 { font-size:clamp(38px,4vw,61px); text-transform:uppercase; line-height:1.02; }
-.showcase-content>p { font-size:13px; line-height:1.8; margin-top:24px; max-width:440px; }
-.showcase-card-area { min-width:0; }
-.showcase-card-area>.eyebrow { font-size:9px; margin-bottom:13px; }
-.showcase-track { --card-width:215px; position:relative; display:flex; gap:46px; overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; scrollbar-width:none; padding:70px max(40px,calc((100% - var(--card-width)) / 2)) 65px; scroll-behavior:smooth; }
-.showcase-track::-webkit-scrollbar { display:none; }
-.showcase-card { flex:0 0 var(--card-width); padding:0; min-width:0; background:var(--cream); color:var(--brown); border:3px solid transparent; border-radius:16px; overflow:hidden; text-align:left; transform-origin:center; transition:transform .3s,border-color .3s; }
-.showcase-card.is-active { border-color:#ffe38e; transform:translateY(-12px) scale(1.25); }
-.showcase-card>img { width:100%; height:auto; aspect-ratio:1; object-fit:contain; }
-.showcase-card>span { display:flex; flex-direction:column; padding:17px 13px; min-height:112px; }
-.showcase-card small { font-size:7px; font-weight:900; letter-spacing:.04em; margin-bottom:10px; }
-.showcase-card strong { font-family:var(--font-display); font-size:22px; font-weight:400; line-height:1.1; }
 .campaign-journal { background:#fff9ed; padding:90px 36px; border-top:1px solid #65413620; }
 .closing { text-align:center; padding:50px 24px 45px; }
 .closing-symbol { width:72px; height:128px; margin:0 auto 25px; }
@@ -515,23 +495,8 @@ footer>span { font-size:8px; order:3; }
 .identity-guide .type-specimen-display .type-sample { font-size:34px; }
 .identity-guide .type-alphabet { font-size:12px; }
 }
-@media(max-width:1000px) {
-.showcase-stage { padding:55px 35px 70px; gap:35px; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
-.showcase-content h3 { font-size:42px; }
-.showcase-track { --card-width:190px; }
-}
 @media(max-width:767px) {
 .launch-showcase { padding:0; scroll-margin-top:-22px; }
-.showcase-stage { grid-template-columns:1fr; padding:38px 24px 70px; min-height:calc(100svh - var(--nav-height)); gap:25px; }
-.showcase-shade { background:linear-gradient(110deg,#291a17ef,#291a1780),linear-gradient(0deg,#291a17b0,transparent); }
-.showcase-content h3 { font-size:39px; }
-.showcase-content>.eyebrow { font-size:8px; margin-bottom:20px; }
-.showcase-content>p { font-size:12px; margin-top:20px; }
-.showcase-track { --card-width:175px; }
-.showcase-card.is-active { transform:translateY(-10px) scale(1.22); }
-.showcase-card strong { font-size:21px; }
-.showcase-card>span { min-height:112px; padding:15px 11px; }
-.showcase-track { gap:38px; padding-block:60px 55px; }
 .campaign-journal { padding:60px 24px; }
 }
 @media(max-width:767px) { .campaign-font-name { font-size:32px; } }
