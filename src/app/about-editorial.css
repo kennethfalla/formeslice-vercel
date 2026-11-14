@@ -187,7 +187,6 @@
   .slice-wheel,.slice-wheel img { animation:none; }
   .slice-wheel img:first-child { opacity:1; }
 }
-/* The fourth portrait sits in soft focus behind the center. */
 .founders-section { padding:clamp(55px,7vw,95px) 20px 74px; background:#fffaf3; }
 .founders-section .content h2 { margin:9px 0 13px; letter-spacing:-.065em; }
 .founder-carousel { width:min(960px,100%); margin:22px auto 0; }
@@ -209,8 +208,10 @@
 .founder-slide[data-position="left"],.founder-slide[data-position="right"] { --size:.71; z-index:2; filter:saturate(.77); }
 .founder-slide[data-position="left"] { --offset:calc(var(--orbit) * -1); --tilt:-5deg; }
 .founder-slide[data-position="right"] { --offset:var(--orbit); --tilt:5deg; }
-.founder-slide[data-position="back"] { --size:.87; --offset:clamp(38px,6vw,105px); --tilt:11deg; bottom:clamp(53px,8vw,140px); z-index:1; opacity:.43; filter:blur(5px) saturate(.65); pointer-events:none; }
-.founder-card { width:100%; padding:0 0 9px; text-align:center; color:var(--cocoa); }
+.founder-slide[data-position="back"] { --size:.63; --offset:clamp(46px,7vw,115px); --tilt:9deg; bottom:clamp(143px,14vw,198px); z-index:1; opacity:.72; filter:saturate(.65); }
+.founder-slide:focus-within { z-index:4; }
+.founder-card { display:block; width:100%; padding:0 0 9px; border:0; border-radius:45% 45% 9px 9px; background:transparent; text-align:center; color:var(--cocoa); }
+.founder-slide:has(.founder-card:hover),.founder-slide:focus-within { opacity:1; filter:none; }
 .founder-card img { width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:45% 45% 9px 9px; mix-blend-mode:multiply; }
 .founder-name { position:relative; display:grid; place-items:center; min-height:74px; margin:-14px -8px 0; padding:13px 13px 15px; background:#eab0c4; clip-path:polygon(0 11%,100% 0,98% 100%,2% 89%); }
 .founder-slide:nth-child(even) .founder-name { background:#f0d397; clip-path:polygon(0 0,100% 11%,98% 89%,2% 100%); }
@@ -224,6 +225,7 @@
   .founders-section { padding-inline:12px; }
   .founder-stage { height:clamp(248px,66vw,393px); }
   .founder-slide[data-position="left"],.founder-slide[data-position="right"] { --size:.57; }
+  .founder-slide[data-position="back"] { --size:.56; bottom:clamp(136px,24vw,188px); }
   .founder-name { min-height:59px; margin-inline:-3px; padding:9px 8px 11px; }
   .founder-name small { font-size:10px; }
 }

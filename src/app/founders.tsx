@@ -15,8 +15,19 @@ const positions = ["center", "right", "back", "left"];
 
 export function Founders() {
   const [active, setActive] = useState(0);
+  const hasSelected = useRef(false);
   const stage = useRef<HTMLDivElement>(null);
-  useVisibleAutoplay(stage, () => setActive(index => (index + 1) % founders.length), 4800);
+  useVisibleAutoplay(stage, () => {
+    if (!hasSelected.current && !stage.current?.matches(":focus-within, :hover")) {
+      setActive(index => (index + 1) % founders.length);
+    }
+  }, 4800);
+
+  function selectFounder(index: number) {
+    hasSelected.current = true;
+    setActive(index);
+  }
+
   return <section className="founders-section" id="founders" aria-labelledby="founders-title">
     <div className="content centered">
       <span className="eyebrow">THE PEOPLE BEHIND FORMÉSLICE</span>
@@ -27,17 +38,17 @@ export function Founders() {
       <div className="founder-stage" ref={stage}>
         {founders.map((founder, index) => {
           const position = positions[(index - active + founders.length) % founders.length];
-          return <figure className="founder-slide" key={founder.photo} data-position={position}>
-            <div className="founder-card">
+          return <div className="founder-slide" key={founder.photo} data-position={position}>
+            <button className="founder-card" type="button" aria-pressed={index === active} onClick={() => selectFounder(index)}>
               <Image src={`/images/details/founders/${founder.photo}`} width={360} height={360} alt="" sizes="(max-width: 767px) 44vw, 285px" />
-              <figcaption className="founder-name"><strong>{founder.name}</strong><small>Co-founder</small></figcaption>
-            </div>
-          </figure>;
+              <span className="founder-name"><strong>{founder.name}</strong><small>Co-founder</small></span>
+            </button>
+          </div>;
         })}
       </div>
       <div className="founder-dots" role="group" aria-label="Choose a founder">
         {founders.map((founder, index) => <button type="button" key={founder.photo} aria-label={founder.name}
-          aria-pressed={index === active} onClick={() => setActive(index)} />)}
+          aria-pressed={index === active} onClick={() => selectFounder(index)} />)}
       </div>
     </div>
   </section>;

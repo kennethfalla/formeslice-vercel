@@ -3,6 +3,14 @@
 import Image from "next/image";
 import { SyrupEdge } from "./syrup-edge";
 
+const launchColors = [
+  { name: "Blush pink", hex: "#EFB3C8" },
+  { name: "Dusty rose", hex: "#D48BA7" },
+  { name: "Vanilla cream", hex: "#EBDEC4" },
+  { name: "Cocoa brown", hex: "#683D34" },
+  { name: "Strawberry red", hex: "#A3131E" },
+];
+
 const supportingPosts = [
   { src: "febpics/feb1.jpg", title: "A flavor-filled invitation", archive: 5, size: 2048, alt: "Cake slices and stacked layers with the ForméSlice tagline and a 25 percent offer" },
   { src: "febpics/feb2.png", title: "Chocolate meets berries", archive: 6, size: 1080, alt: "Chocolate Berries artwork with berry-topped cake slices and a 50 percent offer" },
@@ -22,14 +30,26 @@ export function LaunchPost({ open }: { open: (index: number) => void }) {
               alt="The first ForméSlice brand post showing a wheel of assorted cakes with the brand tagline"
               sizes="(max-width: 700px) 92vw, (max-width: 1140px) 49vw, 545px" />
           </button>
-          <div className="launch-caption">
-            <span className="eyebrow">Official brand post</span>
-            <h3>Introducing FORMÉSLICE.</h3>
-            <p>A different way to experience cake.</p>
-            <p>Choose your flavors. Build your layers. Add the details you love. Then bring everything together in a form of your own.</p>
-            <p>Designed around the idea of Create Your Own Slice, FORMÉSLICE turns every cake into a personal composition — made to your taste, shaped by your choices.</p>
-            <p>Your flavor. Your formation.</p>
-            <p>This is FORMÉSLICE.</p>
+          <div className="launch-details">
+            <div className="launch-caption">
+              <span className="eyebrow">Official brand post</span>
+              <h3>Introducing FORMÉSLICE.</h3>
+              <p>A different way to experience cake.</p>
+              <p>Choose your flavors. Build your layers. Add the details you love. Then bring everything together in a form of your own.</p>
+              <p>Designed around the idea of Create Your Own Slice, FORMÉSLICE turns every cake into a personal composition — made to your taste, shaped by your choices.</p>
+              <p>Your flavor. Your formation.</p>
+              <p>This is FORMÉSLICE.</p>
+            </div>
+            <section className="launch-palette" aria-labelledby="launch-palette-title">
+              <h4 id="launch-palette-title">Color palette</h4>
+              <ul>
+                {launchColors.map(color => <li key={color.hex}>
+                  <span className="launch-swatch" style={{ backgroundColor: color.hex }} aria-hidden="true" />
+                  <strong>{color.name}</strong>
+                  <span>{color.hex}</span>
+                </li>)}
+              </ul>
+            </section>
           </div>
         </article>
         <section className="launch-support" aria-labelledby="launch-support-title">

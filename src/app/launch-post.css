@@ -22,17 +22,27 @@
 .launch-art img { width:100%; height:auto; aspect-ratio:1; border-radius:inherit; }
 .launch-art:hover { box-shadow:0 0 0 2px #f5c9d4; }
 .launch-art:focus-visible { outline-color:#f5c9d4; }
-.launch-caption { padding:clamp(10px,2vw,24px) clamp(10px,2vw,28px) clamp(10px,2vw,24px) 0; }
+.launch-details { min-width:0; padding:clamp(10px,2vw,24px) clamp(10px,2vw,28px) clamp(10px,2vw,24px) 0; }
 .launch-caption .eyebrow { margin-bottom:12px; color:#f5c9d4; text-transform:uppercase; }
 .launch-showcase .launch-caption h3 { margin-bottom:20px; font-size:clamp(27px,3.7vw,51px); color:var(--paper); }
 .launch-caption p { max-width:46ch; margin-top:13px; font-size:clamp(13px,1.32vw,16px); }
 .launch-caption p:nth-last-child(-n+2) { font-weight:900; }
+.launch-palette { margin-top:24px; padding-top:18px; border-top:1px solid #f7dad054; }
+.launch-palette h4 { margin:0 0 11px; font-size:16px; font-weight:900; }
+.launch-palette ul { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin:0; padding:0; list-style:none; }
+.launch-palette li { display:grid; align-content:start; gap:3px; font-size:10px; line-height:1.3; }
+.launch-swatch { display:block; aspect-ratio:2; border:1px solid #fff5e765; border-radius:6px; margin-bottom:3px; }
+.launch-palette li>span:last-child { color:#f7dce0; font-variant-numeric:tabular-nums; }
 .launch-support { margin-top:clamp(31px,5vw,68px); }
 .launch-showcase .launch-support h3 { margin-bottom:16px; color:var(--paper); font-size:clamp(23px,3vw,38px); }
 .launch-support ul { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(7px,1.7vw,20px); margin:0; padding:0; list-style:none; }
 
 @media(max-width:700px) {
   .launch-feature { grid-template-columns:1fr; gap:10px; }
-  .launch-caption { padding:14px 10px 16px; }
+  .launch-details { padding:14px 10px 16px; }
   .launch-support .launch-art { border-radius:8px; }
+}
+@media(max-width:1000px) {
+  .launch-palette ul { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .launch-swatch { max-height:40px; }
 }
